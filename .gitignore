@@ -1,0 +1,35 @@
+# Build directories
+build/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+Testing/
+
+# Visual Studio
+.vs/
+*.vcxproj*
+*.sln
+
+# Compiled objects
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.lib
+*.dll
+
+# Python
+__pycache__/
+*.pyc
+
+# Output data
+*.csv
+
+# Editors
+.vscode/
+.idea/
