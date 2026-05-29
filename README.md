@@ -78,27 +78,31 @@ Planned:
 
 ## Project Structure
 
+```text
 include/    -> Header files
 src/        -> Implementations
 tests/      -> Unit tests
 apps/       -> Solver executables
 python/     -> Visualization scripts
+```
 
 ---
 
 ## Build Instructions
 
+```bash
 mkdir build
 cd build
 
 cmake -G "MinGW Makefiles" ..
 cmake --build .
-
+```
 
 Run tests:
 
+```bash
 ctest --output-on-failure
-
+```
 
 ---
 
