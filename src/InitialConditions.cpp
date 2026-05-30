@@ -22,6 +22,6 @@ void InitialConditions::sinewave(Field1D& field){
     constexpr double pi = std::numbers::pi;
     for (size_t i = 0; i < field.size(); ++i){
         double x = field.grid().x(i);
-        field[i] = std::sin(2 * pi * x);
+        field[i] = std::sin(4 * pi * x);
     }
 }
