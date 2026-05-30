@@ -47,7 +47,7 @@ target_link_libraries(initial_conditions PUBLIC field1d)
 add_executable(initialize_field apps/initialize_field.cpp)
 target_link_libraries(initialize_field PRIVATE io initial_conditions field1d)
 
-add_library(advection STATIC src/UpwindScheme.cpp)
+add_library(advection STATIC src/UpwindScheme.cpp src/FTCS.cpp)
 target_include_directories(advection PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(advection PUBLIC field1d)
 
