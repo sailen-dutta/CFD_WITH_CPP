@@ -1,4 +1,4 @@
-#include "Field1D.h"
+#include "core/Field1D.h"
 #include <gtest/gtest.h>
 
 TEST(Field1DTest, ConstructorCreatesCorrectSize){

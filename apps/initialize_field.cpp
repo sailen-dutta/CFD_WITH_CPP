@@ -1,7 +1,7 @@
-#include "CSVWriter.h"
-#include "Field1D.h"
-#include "Grid1D.h"
-#include "InitialConditions.h"
+#include "io/CSVWriter.h"
+#include "core/Field1D.h"
+#include "core/Grid1D.h"
+#include "physics/InitialConditions.h"
 
 int main(){
     Grid1D grid(0.0, 1.0, 101);

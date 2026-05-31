@@ -1,4 +1,4 @@
-#include "Vector.h"
+#include "core/Vector.h"
 #include <algorithm>    // std::fill, std::min_element, std::max_element
 #include <numeric>      // std::sqrt, std::abs
 #include <cmath>        // std::accumulate, std::inner_product

@@ -1,4 +1,4 @@
-#include "Grid1D.h"
+#include "core/Grid1D.h"
 #include <gtest/gtest.h>
 
 TEST(Grid1DTest, ConstructorStoresBasicProperties){

@@ -1,4 +1,4 @@
-#include "Grid1D.h"
+#include "core/Grid1D.h"
 #include <stdexcept>
 
 Grid1D::Grid1D(double x0, double x1, size_t nx) : x0_(x0), x1_(x1), nx_(nx), x_(nx){

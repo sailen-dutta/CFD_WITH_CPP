@@ -1,4 +1,4 @@
-#include "FTCS.h"
+#include "numerics/FTCS.h"
 
 void FTCS::step(Field1D& u, double c, double dt){
     Field1D u_new = u;

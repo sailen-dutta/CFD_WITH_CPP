@@ -5,17 +5,24 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Compiler warning flags
+if (MSVS)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -pedantic)
+endif()
+
 add_library(vector STATIC 
             src/core/Vector.cpp)
 
 target_include_directories(vector
-    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 add_library(grid1d STATIC 
             src/core/Grid1D.cpp)    
 
 target_include_directories(grid1d 
-    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(grid1d PUBLIC vector)
 
@@ -23,7 +30,7 @@ add_library(field1d STATIC
             src/core/Field1D.cpp)
 
 target_include_directories(field1d
-    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(field1d
     PUBLIC
@@ -39,14 +46,14 @@ include(GoogleTest)
 add_library(io STATIC 
             src/io/CSVWriter.cpp)
 target_include_directories(io PUBLIC 
-                           ${PROJECT_SOURCE_DIR}/include/io)
+                           ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(io PUBLIC 
                       field1d)
 
 add_library(initial_conditions STATIC 
             src/physics/InitialConditions.cpp)
 target_include_directories(initial_conditions PUBLIC 
-                           ${PROJECT_SOURCE_DIR}/include/physics)
+                           ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(initial_conditions PUBLIC 
                       field1d)
 
@@ -58,10 +65,11 @@ target_link_libraries(initialize_field PRIVATE
                       field1d)
 
 add_library(advection STATIC 
-            src/discretization-numerics/UpwindScheme.cpp 
-            src/discretization-numerics/FTCS.cpp)
+            src/numerics/UpwindScheme.cpp 
+            src/numerics/FTCS.cpp
+            src/numerics/LaxFriedrichsScheme.cpp)
 target_include_directories(advection PUBLIC 
-                           ${PROJECT_SOURCE_DIR}/include/discretization-numerics)
+                           ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(advection PUBLIC 
                       field1d)
 

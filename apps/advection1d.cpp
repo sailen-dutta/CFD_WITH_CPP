@@ -1,9 +1,10 @@
-#include "Field1D.h"
-#include "Grid1D.h"
-#include "InitialConditions.h"
-#include "UpwindScheme.h"
-#include "FTCS.h"
-#include "CSVWriter.h"
+#include "core/Field1D.h"
+#include "core/Grid1D.h"
+#include "physics/InitialConditions.h"
+#include "numerics/UpwindScheme.h"
+#include "numerics/FTCS.h"
+#include "numerics/LaxFriedrichsScheme.h"
+#include "io/CSVWriter.h"
 
 #include <iostream>
 #include <memory>
@@ -60,6 +61,9 @@ int main(int argc, char* argv[]){
     }
     else if (scheme_name == "ftcs"){
         scheme = std::make_unique<FTCS>();
+    }
+    else if (scheme_name == "laxfriedrichs"){
+        scheme = std::make_unique<LaxFriedrichsScheme>();
     }
     else {
         std::cerr << "Unknown scheme: " << scheme_name << "\n";

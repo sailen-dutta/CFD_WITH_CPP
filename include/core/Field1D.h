@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Grid1D.h"
-#include "Vector.h"
+#include "core/Grid1D.h"
+#include "core/Vector.h"
 
 class Field1D{
     public:

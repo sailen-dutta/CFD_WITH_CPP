@@ -1,4 +1,4 @@
-#include "UpwindScheme.h"
+#include "numerics/UpwindScheme.h"
 
 void UpwindScheme::step(Field1D& u, double c, double dt){
     Field1D u_new = u;

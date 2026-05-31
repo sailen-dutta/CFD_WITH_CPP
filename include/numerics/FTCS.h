@@ -1,5 +1,5 @@
 #pragma once
-#include "AdvectionScheme.h"
+#include "numerics/AdvectionScheme.h"
 
 class FTCS : public AdvectionScheme {
     public:

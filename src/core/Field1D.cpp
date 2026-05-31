@@ -1,4 +1,4 @@
-#include "Field1D.h"
+#include "core/Field1D.h"
 
 Field1D::Field1D(const Grid1D& grid):grid_(grid), values_(grid.size()) {}
 
