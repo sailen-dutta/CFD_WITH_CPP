@@ -4,6 +4,7 @@
 #include "numerics/UpwindScheme.h"
 #include "numerics/FTCS.h"
 #include "numerics/LaxFriedrichsScheme.h"
+#include "numerics/LaxWendroffScheme.h"
 #include "io/CSVWriter.h"
 
 #include <iostream>
@@ -64,6 +65,9 @@ int main(int argc, char* argv[]){
     }
     else if (scheme_name == "laxfriedrichs"){
         scheme = std::make_unique<LaxFriedrichsScheme>();
+    }
+    else if (scheme_name == "laxwendroff"){
+        scheme = std::make_unique<LaxWendroffScheme>();
     }
     else {
         std::cerr << "Unknown scheme: " << scheme_name << "\n";

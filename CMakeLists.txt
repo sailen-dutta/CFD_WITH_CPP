@@ -67,7 +67,9 @@ target_link_libraries(initialize_field PRIVATE
 add_library(advection STATIC 
             src/numerics/UpwindScheme.cpp 
             src/numerics/FTCS.cpp
-            src/numerics/LaxFriedrichsScheme.cpp)
+            src/numerics/LaxFriedrichsScheme.cpp
+            src/numerics/LaxWendroffScheme.cpp)
+            
 target_include_directories(advection PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(advection PUBLIC 
