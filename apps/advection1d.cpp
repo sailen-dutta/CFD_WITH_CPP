@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
     }
 
     double c = 1.0;
-    double dt = 0.001;
+    double dt = 0.005;
     double t_final = 0.2;
     
     /* No. of time steps */

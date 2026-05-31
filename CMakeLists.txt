@@ -6,24 +6,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(vector STATIC 
-            src/Vector.cpp)
+            src/core/Vector.cpp)
 
 target_include_directories(vector
-    PUBLIC ${PROJECT_SOURCE_DIR}/include)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
 
 add_library(grid1d STATIC 
-            src/Grid1D.cpp)    
+            src/core/Grid1D.cpp)    
 
 target_include_directories(grid1d 
-    PUBLIC ${PROJECT_SOURCE_DIR}/include)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
 
 target_link_libraries(grid1d PUBLIC vector)
 
 add_library(field1d STATIC
-            src/Field1D.cpp)
+            src/core/Field1D.cpp)
 
 target_include_directories(field1d
-    PUBLIC ${PROJECT_SOURCE_DIR}/include)
+    PUBLIC ${PROJECT_SOURCE_DIR}/include/core)
 
 target_link_libraries(field1d
     PUBLIC
@@ -36,23 +36,41 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
-add_library(io STATIC src/CSVWriter.cpp)
-target_include_directories(io PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(io PUBLIC field1d)
+add_library(io STATIC 
+            src/io/CSVWriter.cpp)
+target_include_directories(io PUBLIC 
+                           ${PROJECT_SOURCE_DIR}/include/io)
+target_link_libraries(io PUBLIC 
+                      field1d)
 
-add_library(initial_conditions STATIC src/InitialConditions.cpp)
-target_include_directories(initial_conditions PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(initial_conditions PUBLIC field1d)
+add_library(initial_conditions STATIC 
+            src/physics/InitialConditions.cpp)
+target_include_directories(initial_conditions PUBLIC 
+                           ${PROJECT_SOURCE_DIR}/include/physics)
+target_link_libraries(initial_conditions PUBLIC 
+                      field1d)
 
-add_executable(initialize_field apps/initialize_field.cpp)
-target_link_libraries(initialize_field PRIVATE io initial_conditions field1d)
+add_executable(initialize_field 
+               apps/initialize_field.cpp)
+target_link_libraries(initialize_field PRIVATE 
+                      io 
+                      initial_conditions 
+                      field1d)
 
-add_library(advection STATIC src/UpwindScheme.cpp src/FTCS.cpp)
-target_include_directories(advection PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(advection PUBLIC field1d)
+add_library(advection STATIC 
+            src/discretization-numerics/UpwindScheme.cpp 
+            src/discretization-numerics/FTCS.cpp)
+target_include_directories(advection PUBLIC 
+                           ${PROJECT_SOURCE_DIR}/include/discretization-numerics)
+target_link_libraries(advection PUBLIC 
+                      field1d)
 
-add_executable(advection1d apps/advection1d.cpp)
-target_link_libraries(advection1d PRIVATE advection io initial_conditions)
+add_executable(advection1d 
+               apps/advection1d.cpp)
+target_link_libraries(advection1d PRIVATE 
+                      advection
+                      io 
+                      initial_conditions)
 
 ###########################
 ###### Vector Tests #######
