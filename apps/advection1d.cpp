@@ -1,6 +1,8 @@
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 #include "physics/InitialConditions.h"
+#include "physics/ExactSolutions.h"
+#include "analysis/ErrorAnalysis.h"
 #include "numerics/UpwindScheme.h"
 #include "numerics/FTCS.h"
 #include "numerics/LaxFriedrichsScheme.h"
@@ -95,9 +97,22 @@ int main(int argc, char* argv[]){
         }
 
         /* Advance solution */
-        scheme->step(u, c, dt);
+        if (step < nsteps){
+            scheme->step(u, c, dt);
+        }
     }
 
+    if (ic_name == "sine"){
+        Field1D u_exact(grid);
+        ExactSolutions::sineWave(u_exact, c, t_final);
 
+        double l2_error = ErrorAnalysis::computeL2Error(u, u_exact);
+        double linf_error = ErrorAnalysis::computeLinfError(u, u_exact);
+        
+        std::cout << "\nSimulation complete.\n";
+        std::cout << "L2 error: " << l2_error << "\n";
+        std::cout << "L inf error: " << linf_error << "\n";
+    }
+    
     return 0;
 }

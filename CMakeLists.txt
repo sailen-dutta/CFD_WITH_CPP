@@ -43,6 +43,12 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
+add_library(analysis STATIC
+            src/analysis/ErrorAnalysis.cpp)
+target_include_directories(analysis PUBLIC 
+                           ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(analysis PUBLIC
+                      field1d)      
 add_library(io STATIC 
             src/io/CSVWriter.cpp)
 target_include_directories(io PUBLIC 
@@ -51,7 +57,8 @@ target_link_libraries(io PUBLIC
                       field1d)
 
 add_library(initial_conditions STATIC 
-            src/physics/InitialConditions.cpp)
+            src/physics/InitialConditions.cpp
+            src/physics/ExactSolutions.cpp)
 target_include_directories(initial_conditions PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(initial_conditions PUBLIC 
@@ -80,7 +87,8 @@ add_executable(advection1d
 target_link_libraries(advection1d PRIVATE 
                       advection
                       io 
-                      initial_conditions)
+                      initial_conditions
+                      analysis)
 
 ###########################
 ###### Vector Tests #######
