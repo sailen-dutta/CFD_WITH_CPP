@@ -13,13 +13,15 @@
 #include <memory>
 #include <iomanip>
 #include <sstream>
-//#include <filesystem>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]){
-
+    std::cout << "argc = " << argc << std::endl;
     /* Validate command line argument */
     if (argc < 3){
-        std::cerr << "Usage: " << argv[0] << " <scheme> <initial_condition>\n";
+        std::cerr << "Usage: " << argv[0] << " <scheme> <initial_condition>" << std::endl;
         return 1;
     }
     
@@ -76,6 +78,16 @@ int main(int argc, char* argv[]){
         return 1;
     }
     
+    try {
+            if (fs::exists("output")) {
+                fs::remove_all("output");
+            }
+        fs::create_directory("output");
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+        return 1;
+    }   
     
     std::cout << "Using scheme: " << scheme_name << "\n";
     std::cout << "Initial condition: " << ic_name << "\n";
@@ -102,17 +114,20 @@ int main(int argc, char* argv[]){
         }
     }
 
-    if (ic_name == "sine"){
-        Field1D u_exact(grid);
-        ExactSolutions::sineWave(u_exact, c, t_final);
-
-        double l2_error = ErrorAnalysis::computeL2Error(u, u_exact);
-        double linf_error = ErrorAnalysis::computeLinfError(u, u_exact);
-        
-        std::cout << "\nSimulation complete.\n";
-        std::cout << "L2 error: " << l2_error << "\n";
-        std::cout << "L inf error: " << linf_error << "\n";
+    Field1D u_exact(grid);
+    if (ic_name == "sine"){        
+        ExactSolutions::sineWave(u_exact, c, t_final);        
     }
+    else if (ic_name == "square") {        
+        ExactSolutions::squarePulse(u_exact, c, t_final, 0.4, 0.6, 1.0);        
+    }
+
+    double l2_error = ErrorAnalysis::computeL2Error(u, u_exact);
+    double linf_error = ErrorAnalysis::computeLinfError(u, u_exact);   
+
+    std::cout << "\nSimulation complete.\n";
+    std::cout << "L2 error: " << l2_error << "\n";
+    std::cout << "L inf error: " << linf_error << "\n";
     
     return 0;
 }

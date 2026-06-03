@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+#     link_libraries(stdc++fs)
+# endif()
+
 # Compiler warning flags
 if (MSVS)
     add_compile_options(/W4)
