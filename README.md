@@ -94,7 +94,7 @@ python/     -> Visualization scripts
 mkdir build
 cd build
 
-cmake -G "MinGW Makefiles" ..
+cmake -G "MinGW Makefiles" .. (or cmake -G Ninja ..)
 cmake --build .
 ```
 
