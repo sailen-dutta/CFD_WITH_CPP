@@ -133,3 +133,19 @@ target_link_libraries(test_field1d
         GTest::gtest_main)
 
 gtest_discover_tests(test_field1d)
+
+
+###########################
+###### Error Analysis Tests
+###########################
+add_executable(test_error_analysis
+               tests/test_error_analysis.cpp)
+
+target_link_libraries(test_error_analysis
+    PRIVATE
+        analysis
+        field1d
+        grid1d
+        GTest::gtest_main)
+
+gtest_discover_tests(test_error_analysis)
