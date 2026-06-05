@@ -149,3 +149,18 @@ target_link_libraries(test_error_analysis
         GTest::gtest_main)
 
 gtest_discover_tests(test_error_analysis)
+
+###########################
+###### Upwind Scheme Tests#
+###########################
+add_executable(test_upwind_scheme
+               tests/test_upwind_scheme.cpp)
+
+target_link_libraries(test_upwind_scheme
+    PRIVATE
+        advection
+        field1d
+        grid1d
+        GTest::gtest_main)
+
+gtest_discover_tests(test_upwind_scheme)
