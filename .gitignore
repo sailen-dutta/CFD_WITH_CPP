@@ -33,3 +33,12 @@ __pycache__/
 # Editors
 .vscode/
 .idea/
+
+# Latex files
+*.tex
+*.toc
+*.log
+*.aux
+*.fdb_latexmk
+*.fls 
+*.synctex.gz
