@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # endif()
 
 # Compiler warning flags
-if (MSVS)
+if (MSVC)
     add_compile_options(/W4)
 else()
     add_compile_options(-Wall -Wextra -pedantic)
@@ -54,7 +54,10 @@ target_include_directories(analysis PUBLIC
 target_link_libraries(analysis PUBLIC
                       field1d)      
 add_library(io STATIC 
-            src/io/CSVWriter.cpp)
+            src/io/CSVWriter.cpp
+            src/io/VTKWriter1D.cpp
+            src/io/OutputManager.cpp)
+
 target_include_directories(io PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(io PUBLIC 
@@ -80,7 +83,7 @@ add_library(advection STATIC
             src/numerics/FTCS.cpp
             src/numerics/LaxFriedrichsScheme.cpp
             src/numerics/LaxWendroffScheme.cpp)
-            
+
 target_include_directories(advection PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(advection PUBLIC 
@@ -88,11 +91,33 @@ target_link_libraries(advection PUBLIC
 
 add_executable(advection1d 
                apps/advection1d.cpp)
+
 target_link_libraries(advection1d PRIVATE 
                       advection
                       io 
                       initial_conditions
                       analysis)
+        
+add_library(burgers STATIC            
+            src/numerics/flux/RusanovFlux.cpp
+            src/numerics/spatial/FirstOrderFVOperator.cpp
+            src/numerics/time/ForwardEuler.cpp)
+
+target_include_directories(burgers PUBLIC 
+                           ${PROJECT_SOURCE_DIR}/include)
+
+target_link_libraries(burgers PUBLIC 
+                      field1d)
+
+add_executable(burgers1d
+               apps/burgers1d.cpp)
+
+target_link_libraries(burgers1d PRIVATE
+                      burgers
+                      io
+                      initial_conditions
+                      field1d
+                      grid1d)          
 
 ###########################
 ###### Vector Tests #######
