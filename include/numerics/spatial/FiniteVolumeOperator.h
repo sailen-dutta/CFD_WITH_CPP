@@ -3,5 +3,5 @@
 class FiniteVolumeOperator {
     public:
         virtual ~FiniteVolumeOperator() = default;
-        virtual void computeRHS(const Field1D& u, const Field1D& rhs) const = 0;
+        virtual void computeRHS(const Field1D& u, Field1D& rhs) const = 0;
 };
