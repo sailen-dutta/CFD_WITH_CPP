@@ -11,7 +11,8 @@ int main(){
 
     InitialConditions::squarePulse(u, 0.4, 0.6, 1.0);
 
-    CSVWriter::write(u, "solution.csv");
+    CSVWriter writer;
+    writer.write(u, "solution.csv");
 
     return 0;
 }

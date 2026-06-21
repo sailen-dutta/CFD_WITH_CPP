@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
         std::cerr << "Filesystem error: " << e.what() << std::endl;
         return 1;
     }   
-    
+    CSVWriter writer;
     std::cout << "Using scheme: " << scheme_name << "\n";
     std::cout << "Initial condition: " << ic_name << "\n";
 
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]){
         if (step % output_frequency == 0){
             std::ostringstream filename;
             filename << "output/solution_" << std::setw(4) << std::setfill('0') << step << ".csv";
-            CSVWriter::write(u,filename.str());
+            writer.write(u,filename.str());
         }
 
         /* Advance solution */
