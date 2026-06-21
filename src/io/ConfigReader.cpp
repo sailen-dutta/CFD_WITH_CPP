@@ -24,6 +24,18 @@ SimulationConfig ConfigReader::read(const std::string& filename){
     cfg.cfl                 = j["simulation"]["cfl"];   
     cfg.equation            = j["physics"]["equation"];
     cfg.initial_condition   = j["initial_condition"]["type"];
+
+    if (j["initial_condition"].contains("gaussian")){
+        cfg.gaussian.center = j["initial_condition"]["gaussian"].value("center", cfg.gaussian.center);
+        cfg.gaussian.sigma  = j["initial_condition"]["gaussian"].value("sigma", cfg.gaussian.sigma);
+    }
+
+    if (j["initial_condition"].contains("square_pulse")){
+        cfg.square_pulse.x_start = j["initial_condition"]["square_pulse"].value("x_start", cfg.square_pulse.x_start);
+        cfg.square_pulse.x_end   = j["initial_condition"]["square_pulse"].value("x_end", cfg.square_pulse.x_end);
+        cfg.square_pulse.value   = j["initial_condition"]["square_pulse"].value("value", cfg.square_pulse.value);
+    }
+    
     cfg.flux                = j["numerics"]["flux"];
     cfg.spatial_operator    = j["numerics"]["spatial_operator"];
     cfg.time_integrator     = j["numerics"]["time_integrator"];
