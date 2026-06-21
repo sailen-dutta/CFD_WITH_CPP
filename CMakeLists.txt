@@ -47,6 +47,8 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
+find_package(nlohmann_json REQUIRED)
+
 add_library(analysis STATIC
             src/analysis/ErrorAnalysis.cpp)
 target_include_directories(analysis PUBLIC 
@@ -56,12 +58,16 @@ target_link_libraries(analysis PUBLIC
 add_library(io STATIC 
             src/io/CSVWriter.cpp
             src/io/VTKWriter1D.cpp
-            src/io/OutputManager.cpp)
+            src/io/TecplotWriter1D.cpp            
+            src/io/OutputManager.cpp
+            src/io/OutputWriterFactory.cpp
+            src/io/ConfigReader.cpp)
 
 target_include_directories(io PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(io PUBLIC 
-                      field1d)
+                      field1d
+                      nlohmann_json::nlohmann_json)
 
 add_library(initial_conditions STATIC 
             src/physics/InitialConditions.cpp
