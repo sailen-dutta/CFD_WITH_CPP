@@ -1,4 +1,4 @@
-#include "physics/InitialConditions.h"
+#include "physics/initial_conditions/InitialConditions.h"
 
 
 void InitialConditions::squarePulse(Field1D& field, double x_start, double x_end, double value){
