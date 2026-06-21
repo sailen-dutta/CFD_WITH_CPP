@@ -1,0 +1,33 @@
+{
+    "mesh":{
+        "x0" : 0.0,
+        "x1" : 1.0,
+        "nx" : 1001
+    },
+
+    "simulation" : {
+        "t_final" : 0.2,
+        "cfl" : 0.5
+    },
+
+    "physics" : {
+        "equation" : "burgers"
+    },
+
+    "initial_condition" : {
+        "type" : "sinewave"
+    },
+
+    "numerics" : {
+        "flux" : "rusanov",
+        "spatial_operator" : "firs_order_fv",
+        "time_integrator" : "forward_euler"
+    },
+
+    "output" : {
+        "format" : "tecplot",
+        "frequency" : 5,
+        "directory" : "output"
+    }
+
+}
