@@ -15,12 +15,23 @@
     },
 
     "initial_condition" : {
-        "type" : "sinewave"
+        "type" : "sinewave",
+
+        "gaussian" : {
+            "center" : 0.5,
+            "sigma" : 0.05
+        },
+
+        "square_pulse" : {
+            "x_start" : 0.25,
+            "x_end"   : 0.50,
+            "value"   : 1.0
+        }
     },
 
     "numerics" : {
         "flux" : "rusanov",
-        "spatial_operator" : "firs_order_fv",
+        "spatial_operator" : "first_order_fv",
         "time_integrator" : "forward_euler"
     },
 
