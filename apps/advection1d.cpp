@@ -1,6 +1,6 @@
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
-#include "physics/InitialConditions.h"
+#include "physics/initial_conditions/InitialConditions.h"
 #include "physics/ExactSolutions.h"
 #include "analysis/ErrorAnalysis.h"
 #include "numerics/UpwindScheme.h"

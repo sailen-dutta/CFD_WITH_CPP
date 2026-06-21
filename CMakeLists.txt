@@ -70,7 +70,8 @@ target_link_libraries(io PUBLIC
                       nlohmann_json::nlohmann_json)
 
 add_library(initial_conditions STATIC 
-            src/physics/InitialConditions.cpp
+            src/physics/initial_conditions/InitialConditions.cpp
+            src/physics/initial_conditions/InitialConditionFactory.cpp
             src/physics/ExactSolutions.cpp)
 target_include_directories(initial_conditions PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)

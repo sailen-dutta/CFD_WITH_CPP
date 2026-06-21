@@ -2,7 +2,8 @@
 #include "core/Field1D.h"
 #include "core/SimulationConfig.h"
 
-#include "physics/InitialConditions.h"
+#include "physics/initial_conditions/InitialConditions.h"
+#include "physics/initial_conditions/InitialConditionFactory.h"
 #include "physics/BurgersFlux.h"
 
 #include "numerics/flux/RusanovFlux.h"
@@ -49,12 +50,7 @@ int main(){
     Field1D u(grid);
 
     /* Initial condition */
-    if (cfg.initial_condition == "sinewave"){
-        InitialConditions::sinewave(u);
-    }
-    else{
-        throw std::runtime_error("Unsupported initial condition: " + cfg.initial_condition);
-    }
+   InitialConditionFactory::apply(cfg, u);
     
 
     BurgersFlux physical_flux;
