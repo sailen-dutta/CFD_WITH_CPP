@@ -40,3 +40,7 @@ void VTKWriter1D::write(const Field1D& field, const std::string& filename){
     }
     
 }
+
+std::string VTKWriter1D::extension() const {
+    return "vtk";
+}

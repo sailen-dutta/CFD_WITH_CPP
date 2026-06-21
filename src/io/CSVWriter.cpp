@@ -18,3 +18,7 @@ void CSVWriter::write(const Field1D& field, const std::string& filename){
         out << field.grid().x(i) << "," << field[i] << "\n";
     }    
 }
+
+std::string CSVWriter::extension() const {
+    return "csv";
+}
