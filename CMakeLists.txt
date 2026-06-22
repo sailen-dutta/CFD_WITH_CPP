@@ -108,7 +108,8 @@ target_link_libraries(advection1d PRIVATE
 add_library(burgers STATIC            
             src/numerics/flux/RusanovFlux.cpp
             src/numerics/spatial/FirstOrderFVOperator.cpp
-            src/numerics/time/ForwardEuler.cpp)
+            src/numerics/time/ForwardEuler.cpp
+            src/numerics/time/RK2.cpp)
 
 target_include_directories(burgers PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
