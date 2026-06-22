@@ -6,6 +6,8 @@
 class Field1D{
     public:
         explicit Field1D(const Grid1D& grid);
+        Field1D(const Field1D&) = default;
+        Field1D& operator=(const Field1D&) = default;
         size_t size() const noexcept;
         double& operator[](size_t i);
         const double& operator[](size_t i) const;
