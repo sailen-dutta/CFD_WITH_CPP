@@ -9,6 +9,9 @@
 #include "numerics/flux/RusanovFlux.h"
 #include "numerics/spatial/FirstOrderFVOperator.h"
 #include "numerics/time/ForwardEuler.h"
+#include "numerics/time/RK2.h"
+#include "numerics/time/SSPRK3.h"
+#include "numerics/time/TimeIntegratorFactory.h"
 
 #include "io/ConfigReader.h"
 #include "io/OutputManager.h"
@@ -50,17 +53,17 @@ int main(){
     Field1D u(grid);
 
     /* Initial condition */
-   InitialConditionFactory::apply(cfg, u);
-    
+    InitialConditionFactory::apply(cfg, u);    
 
     BurgersFlux physical_flux;
     RusanovFlux numerical_flux(physical_flux);
     FirstOrderFVOperator spatial(numerical_flux);
-    ForwardEuler integrator;
+    
+    auto time_integrator = TimeIntegratorFactory::create(cfg.time_integrator);
 
     /* Output */
-    std::unique_ptr<OutputWriter> writer = OutputWriterFactory::create(cfg.output_format);
-    std::string extension = writer->extension();
+    auto writer = OutputWriterFactory::create(cfg.output_format);
+    auto extension = writer->extension();
 
     try{
         OutputManager::initialize();
@@ -73,15 +76,15 @@ int main(){
     std::cout << "========================================\n";
     std::cout << "      1D Burgers Equation Solver\n";
     std::cout << "========================================\n";
-    std::cout << "Grid points      : " << grid.size() << "\n";
-    std::cout << "Domain           : ["
+    std::cout << "Grid points        : " << grid.size() << "\n";
+    std::cout << "Domain             : ["
             << grid.x0() << ", "
             << grid.x1() << "]\n";
-    std::cout << "Initial condition: " << cfg.initial_condition << "\n";
-    std::cout << "Numerical Flux   : " << cfg.flux << "\n";
-    std::cout << "Time Integrator  : " << cfg.time_integrator << "\n";
-    std::cout << "CFL              : " << cfg.cfl << "\n";
-    std::cout << "Final Time       : " << cfg.t_final << "\n";
+    std::cout << "Initial condition  : " << cfg.initial_condition << "\n";
+    std::cout << "Numerical Flux     : " << cfg.flux << "\n";
+    std::cout << "Time Integrator    : " << cfg.time_integrator << "\n";
+    std::cout << "CFL                : " << cfg.cfl << "\n";
+    std::cout << "Final Time         : " << cfg.t_final << "\n";
     std::cout << "========================================\n\n";  
 
     double t = 0.0;
@@ -101,7 +104,7 @@ int main(){
             writer->write(u, OutputManager::makeFilename(output_counter++, extension, cfg.output_directory));
         }       
 
-        integrator.advance(u, spatial, dt);
+        time_integrator->advance(u, spatial, dt);
 
         t += dt;
 
