@@ -65,8 +65,10 @@ int main(){
     auto writer = OutputWriterFactory::create(cfg.output_format);
     auto extension = writer->extension();
 
+    auto output_dir = OutputManager::makeOutputDirectory(cfg.output_directory, cfg.equation, cfg.time_integrator);
+
     try{
-        OutputManager::initialize();
+        OutputManager::initialize(output_dir);
     }
     catch (const std::exception& e){
         std::cerr << "Output initialization failed: " << e.what() << "\n";
@@ -101,7 +103,7 @@ int main(){
         }
 
         if (step % cfg.output_frequency == 0){
-            writer->write(u, OutputManager::makeFilename(output_counter++, extension, cfg.output_directory));
+            writer->write(u, OutputManager::makeFilename(output_counter++, extension, output_dir));
         }       
 
         time_integrator->advance(u, spatial, dt);
@@ -112,13 +114,13 @@ int main(){
         ++step;
     }
 
-    writer->write(u, OutputManager::finalFilename(extension, cfg.output_directory));
+    writer->write(u, OutputManager::finalFilename(extension, output_dir));
 
     std::cout << "\n========================================\n";
     std::cout << "Simulation complete.\n";
     std::cout << "Final time : " << t << "\n";
     std::cout << "Steps      : " << step << "\n";
-    std::cout << "Output dir : " << cfg.output_directory << "\n";
+    std::cout << "Output dir : " << output_dir << "\n";
     std::cout << "========================================\n";
 
     return 0;

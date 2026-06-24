@@ -25,4 +25,6 @@ std::string OutputManager::finalFilename(const std::string& extension, const std
     return output_dir + "/final." + extension;
 }
 
-
+std::string OutputManager::makeOutputDirectory(const std::string& root_dir, const std::string& equation, const std::string& time_integrator){
+    return root_dir + "/" + equation + "/" + time_integrator;
+}
