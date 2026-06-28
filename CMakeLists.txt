@@ -61,7 +61,8 @@ add_library(io STATIC
             src/io/TecplotWriter1D.cpp            
             src/io/OutputManager.cpp
             src/io/OutputWriterFactory.cpp
-            src/io/ConfigReader.cpp)
+            src/io/ConfigReader.cpp
+            src/io/RunSummaryWriter.cpp)
 
 target_include_directories(io PUBLIC 
                            ${PROJECT_SOURCE_DIR}/include)
