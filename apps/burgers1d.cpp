@@ -17,6 +17,7 @@
 #include "io/OutputManager.h"
 #include "io/OutputWriter.h"
 #include "io/OutputWriterFactory.h"
+#include "io/RunSummaryWriter.h"
 
 #include <iostream>
 #include <iomanip>
@@ -75,6 +76,8 @@ int main(){
         return 1;
     }    
 
+    RunSummaryWriter::writeSummary(cfg, output_dir);
+    
     std::cout << "========================================\n";
     std::cout << "      1D Burgers Equation Solver\n";
     std::cout << "========================================\n";
