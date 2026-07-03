@@ -44,6 +44,7 @@ std::unique_ptr<OutputWriter> OutputWriterFactory::create(const std::string& fil
   if ( it == lookup_table.end()){
     throw std::runtime_error("Unknown file format: " + file_format);
   }
-
+  
+  /* it->second is a pointer to the creator function. Calling it constructs and returns the appropriate OutputWriter object.*/
   return it->second();
 }
