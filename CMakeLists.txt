@@ -105,7 +105,17 @@ target_link_libraries(advection1d PRIVATE
                       io 
                       initial_conditions
                       analysis)
+
+add_library(reconstruction STATIC
+            src/numerics/reconstruction/PiecewiseConstantReconstruction.cpp
+            src/numerics/reconstruction/MUSCLReconstruction.cpp)
         
+target_include_directories(reconstruction 
+                           PUBLIC ${PROJECT_SOURCE_DIR}/include)
+                
+target_link_libraries(reconstruction 
+                      PUBLIC field1d)
+
 add_library(burgers STATIC            
             src/numerics/flux/RusanovFlux.cpp
             src/numerics/spatial/FirstOrderFVOperator.cpp
@@ -118,7 +128,8 @@ target_include_directories(burgers PUBLIC
                            ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(burgers PUBLIC 
-                      field1d)
+                      field1d
+                      reconstruction)
 
 add_executable(burgers1d
                apps/burgers1d.cpp)
