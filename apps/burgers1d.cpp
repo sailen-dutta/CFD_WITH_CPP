@@ -12,6 +12,7 @@
 #include "numerics/time/RK2.h"
 #include "numerics/time/SSPRK3.h"
 #include "numerics/time/TimeIntegratorFactory.h"
+#include "numerics/reconstruction/PiecewiseConstantReconstruction.h"
 
 #include "io/ConfigReader.h"
 #include "io/OutputManager.h"
@@ -58,7 +59,8 @@ int main(){
 
     BurgersFlux physical_flux;
     RusanovFlux numerical_flux(physical_flux);
-    FirstOrderFVOperator spatial(numerical_flux);
+    PiecewiseConstantReconstruction reconstruction;
+    FirstOrderFVOperator spatial(numerical_flux, reconstruction);
     
     auto time_integrator = TimeIntegratorFactory::create(cfg.time_integrator);
 
