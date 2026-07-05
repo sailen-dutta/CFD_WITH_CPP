@@ -118,7 +118,7 @@ target_link_libraries(reconstruction
 
 add_library(burgers STATIC            
             src/numerics/flux/RusanovFlux.cpp
-            src/numerics/spatial/FirstOrderFVOperator.cpp
+            src/numerics/spatial/FiniteVolumeSpatialOperator.cpp
             src/numerics/time/ForwardEuler.cpp
             src/numerics/time/RK2.cpp
             src/numerics/time/SSPRK3.cpp

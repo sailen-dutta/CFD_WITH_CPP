@@ -1,4 +1,4 @@
-#include "numerics/spatial/FirstOrderFVOperator.h"
+#include "numerics/spatial/FiniteVolumeSpatialOperator.h"
 
 FirstOrderFVOperator::FirstOrderFVOperator(const NumericalFlux& flux, const Reconstruction& reconstruction) : flux_(flux), reconstruction_(reconstruction) {}
 
