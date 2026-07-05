@@ -1,8 +1,8 @@
 #include "numerics/spatial/FiniteVolumeSpatialOperator.h"
 
-FirstOrderFVOperator::FirstOrderFVOperator(const NumericalFlux& flux, const Reconstruction& reconstruction) : flux_(flux), reconstruction_(reconstruction) {}
+FiniteVolumeSpatialOperator::FiniteVolumeSpatialOperator(const NumericalFlux& flux, const Reconstruction& reconstruction) : flux_(flux), reconstruction_(reconstruction) {}
 
-void FirstOrderFVOperator::computeRHS(const Field1D& u, Field1D& rhs) const {
+void FiniteVolumeSpatialOperator::computeRHS(const Field1D& u, Field1D& rhs) const {
     double dx = u.grid().dx();
     size_t N = u.size();
 

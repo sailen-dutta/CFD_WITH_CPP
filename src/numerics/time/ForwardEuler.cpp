@@ -1,6 +1,6 @@
 #include "numerics/time/ForwardEuler.h"
 
-void ForwardEuler :: advance(Field1D& u, const FiniteVolumeOperator& op, double dt) const {
+void ForwardEuler :: advance(Field1D& u, const SpatialOperator& op, double dt) const {
     Field1D rhs(u.grid());
     op.computeRHS(u, rhs);
 

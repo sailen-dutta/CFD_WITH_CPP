@@ -1,6 +1,6 @@
 #include "numerics/time/SSPRK3.h"
 
-void SSPRK3::advance(Field1D& u, const FiniteVolumeOperator& op, double dt) const {
+void SSPRK3::advance(Field1D& u, const SpatialOperator& op, double dt) const {
     Field1D u0(u);
     Field1D u1(u);
     Field1D u2(u);

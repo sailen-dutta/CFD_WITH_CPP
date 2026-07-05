@@ -1,6 +1,6 @@
 #include "numerics/time/RK2.h"
 
-void RK2::advance(Field1D& u, const FiniteVolumeOperator& op, double dt) const{
+void RK2::advance(Field1D& u, const SpatialOperator& op, double dt) const{
     Field1D u0(u);
     Field1D u1(u);
 
