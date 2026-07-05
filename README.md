@@ -1,102 +1,201 @@
-# CFD with C++
+# CFD_WITH_CPP
 
-A long-term learning project focused on implementing Computational Fluid Dynamics (CFD) solvers in modern C++.
+An ongoing open-source Computational Fluid Dynamics (CFD) project written in modern C++.
+
+This project is developed from scratch as a learning platform to strengthen my understanding of:
+
+- numerical methods for CFD
+- finite-volume methods
+- modern C++ software design
+- scientific computing architecture
+- high-performance computing concepts
+
+The objective is not only to implement CFD algorithms, but also to design a clean, extensible solver framework similar in philosophy to larger scientific codes.
+
+---
 
 ## Motivation
 
-I come from a background in Computational Fluid Dynamics (CFD) and numerical methods.  
-This repository is my attempt to deepen my software engineering and modern C++ skills by building CFD solvers from scratch.
+I come from a background in Computational Fluid Dynamics and numerical methods.
 
-The primary goals are:
+This repository is a long-term personal project to combine CFD theory with practical software engineering.  
+Every major component is implemented manually to better understand the underlying algorithms instead of relying on existing CFD libraries.
 
-- Learn modern C++
-- Learn software architecture for scientific computing
-- Learn CMake and build systems
-- Learn unit testing with Google Test
-- Implement numerical schemes from first principles
-- Build reusable CFD infrastructure
-- Eventually develop a Qt-based GUI
-- Visualize results using Python
+Key learning goals:
 
----
-
-## Current Features
-
-- Custom `Vector` class
-- `Grid1D` structured mesh
-- `Field1D` scalar field abstraction
-- Google Test unit tests
-- CMake-based modular build system
-- CSV output for visualization
-- Python plotting pipeline
+- Implement CFD methods from first principles
+- Develop maintainable modern C++ code
+- Learn object-oriented design for scientific applications
+- Build reusable solver infrastructure
+- Practice testing and validation workflows
+- Explore performance optimization and HPC techniques
 
 ---
 
-## Planned Features
+# Current Features
 
-### 1D Solvers
-- Linear advection equation
-- Diffusion equation
-- Burgers equation
-- Shock tube problems
+## Core Infrastructure
 
-### Numerical Schemes
-- Upwind
-- FTCS
-- Lax-Friedrichs
-- Lax-Wendroff
-- MacCormack
-
-### Infrastructure
-- Boundary condition framework
-- Time integrators
-- File I/O improvements
-- Configuration parsing
-
-### Future Goals
-- 2D solvers
-- Navier-Stokes equations
-- Qt GUI
-- Parallelization experiments
-- Performance profiling
+- Custom dynamic `Vector` class
+- Structured 1D mesh (`Grid1D`)
+- Scalar solution field abstraction (`Field1D`)
+- Modular CMake build system
+- Unit testing using Google Test
+- JSON-driven runtime configuration
 
 ---
 
-## Technologies Used
+# Numerical Methods
 
-- C++17
-- CMake
-- Google Test
-- Python (NumPy + Matplotlib)
+## Governing Equations
+
+Currently supported:
+
+- 1D Linear Advection Equation
+- 1D Inviscid Burgers Equation
+
+---
+
+## Spatial Discretization
+
+Finite Volume Method (FVM) framework:
+
+- Conservative finite-volume formulation
+- Numerical flux abstraction
+- Reconstruction-based interface calculation
+
+Implemented flux methods:
+
+- Rusanov / Local Lax-Friedrichs flux
+
+Implemented reconstruction schemes:
+
+- Piecewise constant reconstruction (first-order)
+- MUSCL reconstruction (second-order)
+- Minmod slope limiter
 
 Planned:
-- Qt
-- Eigen or custom linear algebra
-- MPI (future)
+
+- Higher-order limiters
+- WENO reconstruction
+- Additional approximate Riemann solvers
 
 ---
 
-## Project Structure
+## Time Integration
 
-```text
-include/    -> Header files
-src/        -> Implementations
-tests/      -> Unit tests
-apps/       -> Solver executables
-python/     -> Visualization scripts
-```
+Runtime-selectable time integration framework:
+
+Implemented:
+
+- Forward Euler
+- Second-order Runge-Kutta (RK2)
+- SSPRK3 (Strong Stability Preserving Runge-Kutta)
+
+Planned:
+
+- Classical RK4
+- Implicit schemes
+- Dual-time stepping experiments
 
 ---
 
-## Build Instructions
+# Software Architecture
 
-```bash
-mkdir build
-cd build
+The solver uses modular C++ design concepts:
 
-cmake -G "MinGW Makefiles" .. (or cmake -G Ninja ..)
-cmake --build .
+- Abstract interfaces
+- Runtime polymorphism
+- Factory pattern
+- Function pointer based registries
+- Dependency injection between solver components
+
+Current factories:
+
+- Time Integrator Factory
+- Output Writer Factory
+- Initial Condition Factory
+
+Planned:
+
+- Reconstruction Factory
+- Flux Factory
+- Boundary Condition Factory
+
+---
+
+# Input Configuration
+
+Simulations are controlled using JSON files.
+
+Example:
+
+```json
+{
+    "physics": {
+        "equation": "burgers"
+    },
+
+    "numerics": {
+        "flux": "rusanov",
+        "reconstruction": "muscl",
+        "time_integrator": "ssprk3"
+    },
+
+    "initial_condition": {
+        "type": "gaussian"
+    }
+}
 ```
+
+This allows changing numerical methods without recompilation.
+
+---
+
+# Output Support
+
+Supported output formats:
+
+- CSV
+- Tecplot ASCII
+- VTK
+
+Additional run information:
+
+- Simulation metadata
+- Numerical configuration summary
+- Regression comparison support
+
+---
+
+# Python Utilities
+
+Python scripts are used for:
+
+- Solution visualization
+- Comparing numerical schemes
+- Regression checks
+- Error analysis
+
+Libraries:
+
+- NumPy
+- Pandas
+- Matplotlib
+
+---
+
+# Testing
+
+The project uses Google Test.
+
+Current tests cover:
+
+- Vector operations
+- Grid generation
+- Field operations
+- Error analysis utilities
+- Numerical components
 
 Run tests:
 
@@ -106,20 +205,105 @@ ctest --output-on-failure
 
 ---
 
-## Visualization
+# Build Instructions
 
-Python scripts inside `python/` can be used to visualize solver output.
+Configure:
+
+```bash
+mkdir build
+cd build
+cmake -G Ninja ..
+```
+
+Build:
+
+```bash
+cmake --build .
+```
+
+Run:
+
+```bash
+./burgers1d
+```
 
 ---
 
-## Learning Philosophy
+# Project Structure
 
-The emphasis of this repository is clarity, correctness, and learning — not production-grade performance.
+```text
+CFD_WITH_CPP/
 
-Many components are intentionally implemented manually (instead of using existing libraries) to better understand:
+include/
+    core/              Core data structures
+    numerics/          Numerical methods
+    physics/           Physics models and initial conditions
+    io/                Input/output infrastructure
 
-- numerical methods,
-- memory management,
-- data structures,
-- software design,
-- and scientific computing workflows.
+src/
+    core/
+    numerics/
+    physics/
+    io/
+
+apps/
+    Solver applications
+
+tests/
+    Google Test unit tests
+
+python/
+    Visualization and analysis tools
+
+config/
+    JSON simulation files
+```
+
+---
+
+# Future Development Roadmap
+
+## Numerical Methods
+
+- Additional reconstruction schemes
+- Advanced slope limiters
+- WENO schemes
+- Euler equations
+- Shock tube problems
+- 2D finite-volume solver
+- Navier-Stokes equations
+
+---
+
+## Software Engineering
+
+- Improved solver driver architecture
+- Generic factory framework
+- More extensive unit testing
+- Continuous integration
+
+---
+
+## High Performance Computing
+
+Planned experiments:
+
+- OpenMP shared-memory parallelism
+- MPI domain decomposition
+- SLURM-based workflows
+- GPU acceleration exploration
+
+---
+
+# Long-Term Vision
+
+The long-term goal is to evolve this repository into a small but well-structured CFD research framework.
+
+The emphasis is on:
+
+- correctness
+- clean architecture
+- numerical understanding
+- maintainability
+
+Performance optimizations are introduced gradually after establishing a reliable numerical foundation.
