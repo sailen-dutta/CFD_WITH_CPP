@@ -2,14 +2,17 @@
 #include <filesystem>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 namespace fs = std::filesystem;
 
 void OutputManager::initialize(const std::string& output_dir){
     if (fs::exists(output_dir)){
+        std::cout << "Removing existing output directory: " << output_dir << "\n";
         fs::remove_all(output_dir);
     }
 
+    std::cout << "Creating output directory: " << output_dir << "\n";
     fs::create_directories(output_dir);
 }
 

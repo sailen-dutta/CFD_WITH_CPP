@@ -35,8 +35,9 @@ SimulationConfig ConfigReader::read(const std::string& filename){
         cfg.square_pulse.x_end   = j["initial_condition"]["square_pulse"].value("x_end", cfg.square_pulse.x_end);
         cfg.square_pulse.value   = j["initial_condition"]["square_pulse"].value("value", cfg.square_pulse.value);
     }
-    
+     
     cfg.flux                = j["numerics"]["flux"];
+    cfg.reconstruction      = j["numerics"]["reconstruction"];
     cfg.spatial_operator    = j["numerics"]["spatial_operator"];
     cfg.time_integrator     = j["numerics"]["time_integrator"];
     cfg.output_format       = j["output"]["format"];

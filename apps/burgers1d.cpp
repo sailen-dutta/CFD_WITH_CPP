@@ -7,12 +7,14 @@
 #include "physics/BurgersFlux.h"
 
 #include "numerics/flux/RusanovFlux.h"
-#include "numerics/spatial/FirstOrderFVOperator.h"
+#include "numerics/spatial/FiniteVolumeSpatialOperator.h"
 #include "numerics/time/ForwardEuler.h"
 #include "numerics/time/RK2.h"
 #include "numerics/time/SSPRK3.h"
 #include "numerics/time/TimeIntegratorFactory.h"
 #include "numerics/reconstruction/PiecewiseConstantReconstruction.h"
+#include "numerics/reconstruction/MUSCLReconstruction.h"
+#include "numerics/reconstruction/ReconstructionFactory.h"
 
 #include "io/ConfigReader.h"
 #include "io/OutputManager.h"
@@ -59,8 +61,10 @@ int main(){
 
     BurgersFlux physical_flux;
     RusanovFlux numerical_flux(physical_flux);
-    PiecewiseConstantReconstruction reconstruction;
-    FirstOrderFVOperator spatial(numerical_flux, reconstruction);
+    
+    auto reconstruction = ReconstructionFactory::create(cfg.reconstruction);
+
+    FiniteVolumeSpatialOperator spatial(numerical_flux, *reconstruction);
     
     auto time_integrator = TimeIntegratorFactory::create(cfg.time_integrator);
 
@@ -89,6 +93,7 @@ int main(){
             << grid.x1() << "]\n";
     std::cout << "Initial condition  : " << cfg.initial_condition << "\n";
     std::cout << "Numerical Flux     : " << cfg.flux << "\n";
+    std::cout << "Reconstruction     : " << cfg.reconstruction << "\n";
     std::cout << "Time Integrator    : " << cfg.time_integrator << "\n";
     std::cout << "CFL                : " << cfg.cfl << "\n";
     std::cout << "Final Time         : " << cfg.t_final << "\n";

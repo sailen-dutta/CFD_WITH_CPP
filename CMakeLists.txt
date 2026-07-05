@@ -108,7 +108,8 @@ target_link_libraries(advection1d PRIVATE
 
 add_library(reconstruction STATIC
             src/numerics/reconstruction/PiecewiseConstantReconstruction.cpp
-            src/numerics/reconstruction/MUSCLReconstruction.cpp)
+            src/numerics/reconstruction/MUSCLReconstruction.cpp
+    	    src/numerics/reconstruction/ReconstructionFactory.cpp)
         
 target_include_directories(reconstruction 
                            PUBLIC ${PROJECT_SOURCE_DIR}/include)

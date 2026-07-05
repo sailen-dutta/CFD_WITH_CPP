@@ -16,6 +16,7 @@ void RunSummaryWriter::writeSummary(const SimulationConfig& cfg, const std::stri
     j["physics"]["equation"]            = cfg.equation;
     j["initial_condition"]["type"]      = cfg.initial_condition;
     j["numerics"]["flux"]               = cfg.flux;
+    j["numerics"]["reconstruction"]     = cfg.reconstruction;
     j["numerics"]["spatial_operator"]   = cfg.spatial_operator;
     j["numerics"]["time_integrator"]    = cfg.time_integrator;
     j["output"]["format"]               = cfg.output_format;

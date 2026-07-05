@@ -27,6 +27,7 @@ struct SimulationConfig{
     SquarePulseConfig square_pulse;
 
     std::string flux;
+    std::string reconstruction;
     std::string spatial_operator;
     std::string time_integrator;
 
