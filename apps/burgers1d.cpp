@@ -15,6 +15,8 @@
 #include "numerics/reconstruction/PiecewiseConstantReconstruction.h"
 #include "numerics/reconstruction/MUSCLReconstruction.h"
 #include "numerics/reconstruction/ReconstructionFactory.h"
+#include "numerics/limiter/SlopeLimiter.h"
+#include "numerics/limiter/SlopeLimiterFactory.h"
 
 #include "io/ConfigReader.h"
 #include "io/OutputManager.h"
@@ -38,8 +40,6 @@ double computeDt(const Field1D& u, double cfl, double& umax){
     if (umax < 1e-12) return 1e-6;
 
     return cfl * u.grid().dx() / umax;
-
-
 }
 
 int main(){
@@ -61,8 +61,10 @@ int main(){
 
     BurgersFlux physical_flux;
     RusanovFlux numerical_flux(physical_flux);
+
+    auto limiter = SlopeLimiterFactory::create(cfg.limiter);
     
-    auto reconstruction = ReconstructionFactory::create(cfg.reconstruction);
+    auto reconstruction = ReconstructionFactory::create(cfg.reconstruction, *limiter);
 
     FiniteVolumeSpatialOperator spatial(numerical_flux, *reconstruction);
     
@@ -72,7 +74,7 @@ int main(){
     auto writer = OutputWriterFactory::create(cfg.output_format);
     auto extension = writer->extension();
 
-    auto output_dir = OutputManager::makeOutputDirectory(cfg.output_directory, cfg.equation, cfg.time_integrator);
+    auto output_dir = OutputManager::makeOutputDirectory(cfg.output_directory, cfg.equation, cfg.flux, cfg.reconstruction, cfg.limiter, cfg.time_integrator);
 
     try{
         OutputManager::initialize(output_dir);
