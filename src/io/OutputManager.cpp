@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 namespace fs = std::filesystem;
 
@@ -28,6 +29,12 @@ std::string OutputManager::finalFilename(const std::string& extension, const std
     return output_dir + "/final." + extension;
 }
 
-std::string OutputManager::makeOutputDirectory(const std::string& root_dir, const std::string& equation, const std::string& time_integrator){
-    return root_dir + "/" + equation + "/" + time_integrator;
+std::string OutputManager::makeOutputDirectory(const std::string& root_dir, const std::string& equation, const std::string& flux, const std::string& reconstruction, const std::string& limiter, const std::string& time_integrator){
+    std::ostringstream dir;
+    dir << root_dir << "/" << equation << "/" << flux << "_" << reconstruction;
+    if (limiter != "none"){
+        dir << "_" << limiter;
+    }
+    dir << "_" << time_integrator;
+    return dir.str();
 }
