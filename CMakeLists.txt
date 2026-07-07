@@ -106,6 +106,17 @@ target_link_libraries(advection1d PRIVATE
                       initial_conditions
                       analysis)
 
+# Slope Limtiers
+add_library(limiter STATIC
+            src/numerics/limiter/NoLimiter.cpp
+            src/numerics/limiter/MinmodLimiter.cpp
+            src/numerics/limiter/VanLeerLimiter.cpp
+            src/numerics/limiter/SuperbeeLimiter.cpp
+            src/numerics/limiter/SlopeLimiterFactory.cpp)
+
+target_include_directories(limiter PUBLIC
+                           ${PROJECT_SOURCE_DIR}/include)
+
 add_library(reconstruction STATIC
             src/numerics/reconstruction/PiecewiseConstantReconstruction.cpp
             src/numerics/reconstruction/MUSCLReconstruction.cpp
@@ -115,7 +126,8 @@ target_include_directories(reconstruction
                            PUBLIC ${PROJECT_SOURCE_DIR}/include)
                 
 target_link_libraries(reconstruction 
-                      PUBLIC field1d)
+                      PUBLIC field1d
+                             limiter)
 
 add_library(burgers STATIC            
             src/numerics/flux/RusanovFlux.cpp
