@@ -2,7 +2,7 @@
     "mesh":{
         "x0" : 0.0,
         "x1" : 1.0,
-        "nx" : 1001
+        "nx" : 501
     },
 
     "simulation" : {
@@ -15,11 +15,11 @@
     },
 
     "initial_condition" : {
-        "type" : "sinewave",
+        "type" : "gaussian",
 
         "gaussian" : {
             "center" : 0.5,
-            "sigma" : 0.05
+            "sigma" : 0.08
         },
 
         "square_pulse" : {
@@ -31,8 +31,12 @@
 
     "numerics" : {
         "flux" : "rusanov",
-        "spatial_operator" : "first_order_fv",
-        "time_integrator" : "forward_euler"
+        "reconstruction" : {
+            "type" : "muscl",
+            "limiter" : "minmod"
+        },
+        "spatial_operator" : "finite_volume",
+        "time_integrator" : "ssprk3"
     },
 
     "output" : {
