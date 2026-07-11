@@ -26,5 +26,5 @@ void MUSCLReconstruction::reconstruct(const Field1D& u, size_t interface, double
 
     /* Reconstruct interface states */
     uL = u[i] + 0.5 * slope_i;
-    uR = u[i] - 0.5 * slope_ip1;
+    uR = u[ip1] - 0.5 * slope_ip1;
 }

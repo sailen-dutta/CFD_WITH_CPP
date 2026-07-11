@@ -129,8 +129,15 @@ target_link_libraries(reconstruction
                       PUBLIC field1d
                              limiter)
 
-add_library(burgers STATIC            
-            src/numerics/flux/RusanovFlux.cpp
+# Numerical Flux 
+add_library(flux STATIC
+	    src/numerics/flux/RusanovFlux.cpp
+	    src/numerics/flux/FluxFactory.cpp)
+
+target_include_directories(flux
+	                   PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+add_library(burgers STATIC           
             src/numerics/spatial/FiniteVolumeSpatialOperator.cpp
             src/numerics/time/ForwardEuler.cpp
             src/numerics/time/RK2.cpp
@@ -142,7 +149,8 @@ target_include_directories(burgers PUBLIC
 
 target_link_libraries(burgers PUBLIC 
                       field1d
-                      reconstruction)
+                      reconstruction
+					  flux)
 
 add_executable(burgers1d
                apps/burgers1d.cpp)

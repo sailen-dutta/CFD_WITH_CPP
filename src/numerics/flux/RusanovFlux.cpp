@@ -1,5 +1,3 @@
-#pragma once
-
 #include "numerics/flux/RusanovFlux.h"
 #include <algorithm>
 
