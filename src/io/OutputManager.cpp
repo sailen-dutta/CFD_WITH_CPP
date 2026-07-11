@@ -32,7 +32,7 @@ std::string OutputManager::finalFilename(const std::string& extension, const std
 std::string OutputManager::makeOutputDirectory(const std::string& root_dir, const std::string& equation, const std::string& flux, const std::string& reconstruction, const std::string& limiter, const std::string& time_integrator){
     std::ostringstream dir;
     dir << root_dir << "/" << equation << "/" << flux << "_" << reconstruction;
-    if (limiter != "none"){
+    if (reconstruction == "muscl"){
         dir << "_" << limiter;
     }
     dir << "_" << time_integrator;

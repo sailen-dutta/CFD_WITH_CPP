@@ -3,14 +3,14 @@
 #include "numerics/limiter/MinmodLimiter.h"
 #include "numerics/limiter/VanLeerLimiter.h"
 #include "numerics/limiter/SuperbeeLimiter.h"
-#include "numerics/limiter/NoLimiter.h"
+#include "numerics/limiter/UnlimitedLimiter.h"
 
 #include <stdexcept>
 #include <unordered_map>
 
 namespace {
-    std::unique_ptr<SlopeLimiter> createNone(){
-        return std::make_unique<NoLimiter>();
+    std::unique_ptr<SlopeLimiter> createUnlimited(){
+        return std::make_unique<UnlimitedLimiter>();
     }
 
     std::unique_ptr<SlopeLimiter> createMinmod(){
@@ -28,7 +28,7 @@ namespace {
     using Creator = std::unique_ptr<SlopeLimiter> (*)();
 
     std::unordered_map<std::string, Creator> lookup_table = {
-        {"none", createNone},
+        {"unlimited", createUnlimited},
         {"minmod", createMinmod},
         {"vanleer", createVanLeer},
         {"superbee", createSuperbee}

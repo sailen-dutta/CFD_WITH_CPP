@@ -38,7 +38,7 @@ SimulationConfig ConfigReader::read(const std::string& filename){
      
     cfg.flux                = j["numerics"]["flux"];
     cfg.reconstruction      = j["numerics"]["reconstruction"]["type"];
-    cfg.limiter             = j["numerics"]["reconstruction"].value("limiter","none");
+    cfg.limiter             = j["numerics"]["reconstruction"].value("limiter","unlimited");
     cfg.spatial_operator    = j["numerics"]["spatial_operator"];
     cfg.time_integrator     = j["numerics"]["time_integrator"];
     cfg.output_format       = j["output"]["format"];

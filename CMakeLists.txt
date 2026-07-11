@@ -108,7 +108,7 @@ target_link_libraries(advection1d PRIVATE
 
 # Slope Limtiers
 add_library(limiter STATIC
-            src/numerics/limiter/NoLimiter.cpp
+            src/numerics/limiter/UnlimitedLimiter.cpp
             src/numerics/limiter/MinmodLimiter.cpp
             src/numerics/limiter/VanLeerLimiter.cpp
             src/numerics/limiter/SuperbeeLimiter.cpp
