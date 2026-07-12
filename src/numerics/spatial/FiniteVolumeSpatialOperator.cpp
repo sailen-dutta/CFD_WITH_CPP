@@ -1,6 +1,6 @@
 #include "numerics/spatial/FiniteVolumeSpatialOperator.h"
 
-FiniteVolumeSpatialOperator::FiniteVolumeSpatialOperator(const NumericalFlux& flux, const Reconstruction& reconstruction) : flux_(flux), reconstruction_(reconstruction) {}
+FiniteVolumeSpatialOperator::FiniteVolumeSpatialOperator(const HyperbolicEquation& equation, const NumericalFlux& flux, const Reconstruction& reconstruction) : equation_(equation), flux_(flux), reconstruction_(reconstruction) {}
 
 void FiniteVolumeSpatialOperator::computeRHS(const Field1D& u, Field1D& rhs) const {
     double dx = u.grid().dx();
@@ -21,8 +21,8 @@ void FiniteVolumeSpatialOperator::computeRHS(const Field1D& u, Field1D& rhs) con
         /* Interface i-1/2 */
         reconstruction_.reconstruct(u,left_interface,uL_left, uR_left);
 
-        double F_right = flux_.compute(uL_right, uR_right);
-        double F_left = flux_.compute(uL_left, uR_left);
+        double F_right = flux_.compute(uL_right, uR_right, equation_);
+        double F_left = flux_.compute(uL_left, uR_left, equation_);
 
         rhs[i] = -(F_right - F_left) / dx;
     }

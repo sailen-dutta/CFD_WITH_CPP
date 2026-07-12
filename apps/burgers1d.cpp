@@ -4,7 +4,7 @@
 
 #include "physics/initial_conditions/InitialConditions.h"
 #include "physics/initial_conditions/InitialConditionFactory.h"
-#include "physics/BurgersFlux.h"
+#include "physics/BurgersEquation.h"
 
 #include "numerics/flux/RusanovFlux.h"
 #include "numerics/spatial/FiniteVolumeSpatialOperator.h"
@@ -17,6 +17,7 @@
 #include "numerics/reconstruction/ReconstructionFactory.h"
 #include "numerics/limiter/SlopeLimiter.h"
 #include "numerics/limiter/SlopeLimiterFactory.h"
+#include "numerics/flux/FluxFactory.h"
 
 #include "io/ConfigReader.h"
 #include "io/OutputManager.h"
@@ -59,14 +60,14 @@ int main(){
     /* Initial condition */
     InitialConditionFactory::apply(cfg, u);    
 
-    BurgersFlux physical_flux;
-    RusanovFlux numerical_flux(physical_flux);
+    BurgersEquation equation;
+    auto numerical_flux = FluxFactory::create(cfg.flux);
 
     auto limiter = SlopeLimiterFactory::create(cfg.limiter);
     
     auto reconstruction = ReconstructionFactory::create(cfg.reconstruction, *limiter);
 
-    FiniteVolumeSpatialOperator spatial(numerical_flux, *reconstruction);
+    FiniteVolumeSpatialOperator spatial(equation, *numerical_flux, *reconstruction);
     
     auto time_integrator = TimeIntegratorFactory::create(cfg.time_integrator);
 
@@ -122,7 +123,7 @@ int main(){
 
         t += dt;
 
-        std::cout << "Step: " << std::setw(5) << step++ << " | Time: " << std::fixed << std::setprecision(6) << t << " | dt: " << dt << " | umax = " << umax << '\n';
+        std::cout << "Step: " << std::setw(5) << " | Time: " << std::fixed << std::setprecision(6) << t << " | dt: " << dt << " | umax = " << umax << '\n';
         ++step;
     }
 

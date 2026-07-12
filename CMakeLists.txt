@@ -106,6 +106,11 @@ target_link_libraries(advection1d PRIVATE
                       initial_conditions
                       analysis)
 
+# Physics
+add_library(physics STATIC
+            src/physics/BurgersEquation.cpp)
+
+target_include_directories(physics PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # Slope Limtiers
 add_library(limiter STATIC
             src/numerics/limiter/UnlimitedLimiter.cpp
@@ -150,7 +155,8 @@ target_include_directories(burgers PUBLIC
 target_link_libraries(burgers PUBLIC 
                       field1d
                       reconstruction
-					  flux)
+					  flux
+                      physics)
 
 add_executable(burgers1d
                apps/burgers1d.cpp)
