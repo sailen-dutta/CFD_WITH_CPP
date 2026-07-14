@@ -1,0 +1,26 @@
+{
+    "initial_condition": {
+        "type": "sinewave"
+    },
+    "mesh": {
+        "nx": 501,
+        "x0": 0.0,
+        "x1": 1.0
+    },
+    "numerics": {
+        "flux": "rusanov",
+        "reconstruction": "muscl",
+        "spatial_operator": "finite_volume",
+        "time_integrator": "ssprk3"
+    },
+    "output": {
+        "format": "tecplot"
+    },
+    "physics": {
+        "equation": "burgers"
+    },
+    "simulation": {
+        "cfl": 0.5,
+        "t_final": 0.2
+    }
+}
