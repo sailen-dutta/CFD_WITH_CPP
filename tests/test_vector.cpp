@@ -97,3 +97,43 @@ TEST(VectorTest, SizedConstructorCreatesCorrectSize){
 
     EXPECT_DOUBLE_EQ(v[10], 10.0);
 }
+
+TEST(VectorTest, Addition)
+{
+    Vector a{1.0, 2.0, 3.0};
+    Vector b{4.0, 5.0, 6.0};
+
+    Vector c = a + b;
+
+    EXPECT_DOUBLE_EQ(c[0], 5.0);
+    EXPECT_DOUBLE_EQ(c[1], 7.0);
+    EXPECT_DOUBLE_EQ(c[2], 9.0);
+}
+
+TEST(VectorTest, DotProduct)
+{
+    Vector a{1.0, 2.0, 3.0};
+    Vector b{4.0, 5.0, 6.0};
+
+    EXPECT_DOUBLE_EQ(a.dot(b), 32.0);
+}
+
+TEST(VectorTest, ScalarMultiplication)
+{
+    Vector a{1.0, 2.0, 3.0};
+
+    Vector b = 2.0 * a;
+
+    EXPECT_DOUBLE_EQ(b[0], 2.0);
+    EXPECT_DOUBLE_EQ(b[1], 4.0);
+    EXPECT_DOUBLE_EQ(b[2], 6.0);
+}
+
+TEST(VectorTest, ApproximateEquality)
+{
+    Vector a{1.0, 2.0, 3.0};
+    Vector b{1.0, 2.0, 3.0 + 1e-14};
+
+    EXPECT_TRUE(a.isApprox(b));
+    EXPECT_FALSE(a == b);
+}
