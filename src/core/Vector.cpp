@@ -104,3 +104,159 @@ double Vector::max() const{
     }
     return *std::max_element(data_.begin(), data_.end());
 }
+
+/* Size checking helper */
+void Vector::checkSize(const Vector& rhs) const{
+    if (size() != rhs.size()){
+        throw std::invalid_argument("Vector sizes do not match.");
+    }
+}
+
+/* Addition */
+Vector Vector::operator+(const Vector& rhs) const {
+    checkSize(rhs);
+    Vector addition(size());
+    for (std::size_t i = 0; i < size(); ++i){
+        addition[i] = data_[i] + rhs[i];
+    }
+    
+    return addition;
+}
+
+/* Subtraction */
+Vector Vector::operator-(const Vector& rhs) const{
+    checkSize(rhs);
+    Vector subtraction(size());
+    for (std::size_t i = 0; i < size(); ++i){
+        subtraction[i] = data_[i] - rhs[i];
+    }
+
+    return subtraction;
+}
+
+/* Unary minus */
+Vector Vector::operator-() const {
+    Vector result(size());
+    for (std::size_t i = 0; i < size(); ++i){
+        result[i] = -data_[i];
+    }
+
+    return result;
+}
+
+/* Scalar multiplication */
+Vector Vector::operator*(double scalar) const{
+    Vector result(size());
+    for (std::size_t i = 0; i < size(); ++i){
+        result[i] = scalar * data_[i];
+    }
+
+    return result;
+}
+
+/* Scalar division */
+Vector Vector::operator/(double scalar) const{
+    Vector result(size());
+    for (std::size_t i = 0; i < size(); ++i){
+        result[i] = data_[i]/scalar;
+    }
+
+    return result;
+}
+
+/* Compound operators */
+Vector& Vector::operator+=(const Vector& rhs){
+    checkSize(rhs);
+
+    for (std::size_t i = 0; i < size(); ++i){
+        data_[i] += rhs[i];
+    }
+
+    return *this;
+}
+
+Vector& Vector::operator-=(const Vector& rhs){
+    checkSize(rhs);
+
+    for (std::size_t i = 0; i < size(); ++i){
+        data_[i] -= rhs[i];
+    }
+
+    return *this;
+}
+
+Vector& Vector::operator*=(double scalar)
+{
+    for (double& value : data_)
+        value *= scalar;
+
+    return *this;
+}
+
+Vector& Vector::operator/=(double scalar)
+{
+    for (double& value : data_)
+        value /= scalar;
+
+    return *this;
+}
+
+/* Friend function */
+Vector operator*(double scalar, const Vector& vec){
+    return vec * scalar;
+}
+
+/* Dot product */
+double Vector::dot(const Vector& rhs) const {
+    checkSize(rhs);
+
+    return std::inner_product(data_.begin(), data_.end(), rhs.data_.begin(), 0.0);
+}
+
+/* Comparison */
+bool Vector::operator==(const Vector& rhs) const{
+    return data_ == rhs.data_;
+}
+
+bool Vector::operator!=(const Vector& rhs) const{
+    return !(*this == rhs);
+}
+
+/* Numerical Comparison */
+bool Vector::isApprox(const Vector& rhs, double tol) const{
+    checkSize(rhs);
+
+    for (std::size_t i = 0; i < size(); ++i){
+        const double a = data_[i];
+        const double b = rhs[i];
+        
+        const double diff = std::abs(a - b);
+
+        const double scale = std::max({1.0,std::abs(a),std::abs(b)});
+
+        if (diff > tol * scale) return false;
+    }
+
+    return true;
+}
+
+bool Vector::isApproxNorm(const Vector& rhs, double tol) const{
+    checkSize(rhs);
+
+    Vector diff = *this - rhs;
+
+    const double scale = std::max({1.0, this->normL2(), rhs.normL2()});
+
+    return diff.normL2() <= tol * scale;
+}
+
+double Vector::maxAbsDifference(const Vector& rhs) const{
+    checkSize(rhs);
+    double error = 0.0;
+
+    for (std::size_t i = 0; i < size(); ++i){
+        error = std::max(error, std::abs(data_[i] - rhs[i]));
+    }
+
+    return error;
+}
