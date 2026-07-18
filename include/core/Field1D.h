@@ -5,19 +5,28 @@
 
 class Field1D{
     public:
-        explicit Field1D(const Grid1D& grid);
+        /* Constructors */
+        explicit Field1D(const Grid1D& grid, std::size_t num_variables);
         Field1D(const Field1D&) = default;
         Field1D& operator=(const Field1D&) = default;
-        size_t size() const noexcept;
-        double& operator[](size_t i);
-        const double& operator[](size_t i) const;
-        double at(size_t i) const;
-        double value(size_t i) const;
+
+        /* Capacity */
+        std::size_t size() const noexcept;
+        std::size_t numVariables() const noexcept;
+
+        /* Element access */
+        Vector& operator[](std::size_t i);
+        const Vector& operator[](std::size_t i) const;
+        Vector& at(std::size_t i);
+        const Vector& at(std::size_t i) const;
+
+        /* Utility */
         void fill(double value);
-        const Grid1D& grid() const;
-        const Vector& values() const;
+
+        /* Access */
+        const Grid1D& grid() const;       
 
     private:
         Grid1D grid_;
-        Vector values_;
+        std::vector<Vector> values_;
 };

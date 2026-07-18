@@ -2,6 +2,7 @@
 #include <cstddef>
 
 class Field1D;
+class Vector;
 
 class Reconstruction {
     public:
@@ -10,11 +11,11 @@ class Reconstruction {
         /* Compute left and right states at a cell interface 
            Input:
                 u -----------> Cell Averaged solution
-                interface ---> Interface index 
+                interface ---> Interface index. 
             
             Output:
                 uL ----------> Value reconstructed from left cell
                 uR ----------> Value reconstructed from right cell
         */
-        virtual void reconstruct(const Field1D& u, size_t interface, double& uL, double& uR) const = 0;
+        virtual void reconstruct(const Field1D& U, size_t interface, Vector& UL, Vector& UR) const = 0;
 };  

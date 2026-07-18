@@ -1,31 +1,43 @@
 #include "core/Field1D.h"
 
-Field1D::Field1D(const Grid1D& grid):grid_(grid), values_(grid.size()) {}
+/* Constructor */
+Field1D::Field1D(const Grid1D& grid, std::size_t num_variables) : grid_(grid), values_(grid.size(), Vector(num_variables)){}
 
-size_t Field1D::size() const noexcept {
-    return values_.size();
+/* Capacity */
+std::size_t Field1D::size() const noexcept {
+	return values_.size();
 }
 
-double& Field1D::operator[](size_t i){
-    return values_[i];
+std::size_t Field1D::numVariables() const noexcept {
+	if (values_.empty()) return 0;
+
+	return values_.front().size();
 }
 
-const double& Field1D::operator[](size_t i) const {
-    return values_[i];
+/* Element access */
+Vector& Field1D::operator[](std::size_t i) {
+	return values_[i];
 }
 
-double Field1D::at(size_t i) const{
-    return values_.at(i);
+Vector& Field1D::at(std::size_t i) {
+	return values_.at(i);
 }
 
-void Field1D::fill(double value){
-    values_.fill(value);
+const Vector& Field1D::at(std::size_t i) const {
+	return values_.at(i);
 }
 
-const Grid1D& Field1D::grid() const{
-    return grid_;
+/* Utilities */
+void Field1D::fill(double value) {
+	for (auto& cell : values_){
+		cell.fill(value);
+	}
 }
 
-const Vector& Field1D::values() const{
-    return values_;
+/* Access */
+const Grid1D& Field1D::grid() const {
+	return grid_;
 }
+
+
+
