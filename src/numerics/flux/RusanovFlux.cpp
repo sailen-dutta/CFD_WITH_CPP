@@ -1,12 +1,12 @@
 #include "numerics/flux/RusanovFlux.h"
 #include <algorithm>
 
-double RusanovFlux::compute(double uL, double uR, const HyperbolicEquation& equation) const {
-    const double fL = equation.flux(uL);
-    const double fR = equation.flux(uR);
+Vector RusanovFlux::compute(const Vector& UL, const Vector& UR, const HyperbolicEquation& equation) const {
+    const Vector FL = equation.flux(UL);
+    const Vector FR = equation.flux(UR);
 
-    const double a = std::max(equation.maxWaveSpeed(uL), equation.maxWaveSpeed(uR));
+    const double a = std::max(equation.maxWaveSpeed(UL), equation.maxWaveSpeed(UR));
 
-    return 0.5 * (fL + fR) - 0.5 * a * (uR - uL);
+    return 0.5 * (FL + FR) - 0.5 * a * (UR - UL);
 }
 

@@ -1,4 +1,4 @@
-#include "io/ConfigReader.h"
+#include "io/config/ConfigReader.h"
 #include <fstream>
 #include <stdexcept>
 #include <nlohmann/json.hpp>

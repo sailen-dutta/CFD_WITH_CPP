@@ -11,7 +11,8 @@ namespace ErrorAnalysis{
         double sum = 0.0;
 
         for (size_t i = 0; i < numerical.size(); i++){
-            double error = numerical[i] - exact[i];
+            Vector diff = numerical[i] - exact[i];
+            double error = diff.normL2();
             sum += error * error;
         }
         return std::sqrt(sum / static_cast<double> (numerical.size()));
@@ -23,7 +24,7 @@ namespace ErrorAnalysis{
         }
         double max_error = 0.0;
         for (size_t i = 0; i < numerical.size(); i++){
-            double error = std::abs(numerical[i] - exact[i]);
+            const double error = std::abs((numerical[i] - exact[i]).normInf());
             if (error > max_error) max_error = error;
         }
         return max_error;

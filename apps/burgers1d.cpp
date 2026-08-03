@@ -4,7 +4,7 @@
 
 #include "physics/initial_conditions/InitialConditions.h"
 #include "physics/initial_conditions/InitialConditionFactory.h"
-#include "physics/BurgersEquation.h"
+#include "physics/equations/BurgersEquation.h"
 
 #include "numerics/flux/RusanovFlux.h"
 #include "numerics/spatial/FiniteVolumeSpatialOperator.h"
@@ -19,11 +19,11 @@
 #include "numerics/limiter/SlopeLimiterFactory.h"
 #include "numerics/flux/FluxFactory.h"
 
-#include "io/ConfigReader.h"
-#include "io/OutputManager.h"
-#include "io/OutputWriter.h"
-#include "io/OutputWriterFactory.h"
-#include "io/RunSummaryWriter.h"
+#include "io/config/ConfigReader.h"
+#include "io/output/OutputManager.h"
+#include "io/writers/OutputWriter.h"
+#include "io/writers/OutputWriterFactory.h"
+#include "io/output/RunSummaryWriter.h"
 
 #include <iostream>
 #include <iomanip>
@@ -31,16 +31,16 @@
 #include <cmath>
 #include <memory>
 
-double computeDt(const Field1D& u, double cfl, double& umax){
-    umax = 0.0;
+double computeDt(const Field1D& u, const HyperbolicEquation& equation, double cfl, double& maxWaveSpeed){
+    maxWaveSpeed = 0.0;
 
     for (size_t i = 0; i < u.size(); ++i){
-        umax = std::max(umax,std::abs(u[i]));
+        maxWaveSpeed = std::max(maxWaveSpeed,equation.maxWaveSpeed(u[i]));
     }
 
-    if (umax < 1e-12) return 1e-6;
+    if (maxWaveSpeed < 1e-12) return 1e-6;
 
-    return cfl * u.grid().dx() / umax;
+    return cfl * u.grid().dx() / maxWaveSpeed;
 }
 
 int main(){
@@ -55,12 +55,12 @@ int main(){
     }
     
     Grid1D grid(cfg.x0, cfg.x1, cfg.nx);
-    Field1D u(grid);
+    BurgersEquation equation;
+    Field1D u(grid,equation.numVariables());
 
     /* Initial condition */
-    InitialConditionFactory::apply(cfg, u);    
-
-    BurgersEquation equation;
+    InitialConditionFactory::apply(cfg, u); 
+    
     auto numerical_flux = FluxFactory::create(cfg.flux);
 
     auto limiter = SlopeLimiterFactory::create(cfg.limiter);
@@ -109,7 +109,7 @@ int main(){
     /* Time loop */
     while (t < cfg.t_final){
         double umax;
-        double dt = computeDt(u, cfg.cfl, umax);
+        double dt = computeDt(u, equation, cfg.cfl, umax);
 
         if (t + dt > cfg.t_final){
             dt = cfg.t_final - t;

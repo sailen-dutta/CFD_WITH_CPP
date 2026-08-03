@@ -3,7 +3,7 @@
 #include "numerics/spatial/SpatialOperator.h"
 #include "numerics/flux/NumericalFlux.h"
 #include "numerics/reconstruction/Reconstruction.h"
-#include "physics/HyperbolicEquation.h"
+#include "physics/equations/HyperbolicEquation.h"
 
 /* Finite volume spatial operator: 
    Uses reconstruction to compute interface states, and numerical flux to compute interface fluxes */

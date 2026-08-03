@@ -1,12 +1,12 @@
 #pragma once
 
-#include "physics/HyperbolicEquation.h"
+#include "physics/equations/HyperbolicEquation.h"
 #include <cmath>
 
 class BurgersEquation : public HyperbolicEquation {
 	public:
-		double flux(double u) const override;
-		double maxWaveSpeed(double u) const override;
+		Vector flux(const Vector& U) const override;
+		double maxWaveSpeed(const Vector& U) const override;
 		std::size_t numVariables() const override {
 			return 1;
 		}

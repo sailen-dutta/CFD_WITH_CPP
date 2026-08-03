@@ -1,8 +1,9 @@
 #pragma once
-#include "physics/HyperbolicEquation.h"
+#include "physics/equations/HyperbolicEquation.h"
+#include "core/Vector.h"
 
 class NumericalFlux{
     public:
         virtual ~NumericalFlux() = default;
-        virtual double compute(double uL, double uR, const HyperbolicEquation& equation) const = 0;
+        virtual Vector compute(const Vector& UL, const Vector& UR, const HyperbolicEquation& equation) const = 0;
 };

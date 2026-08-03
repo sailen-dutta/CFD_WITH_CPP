@@ -1,4 +1,4 @@
-#include "io/CSVWriter.h"
+#include "io/writers/CSVWriter.h"
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 #include "physics/initial_conditions/InitialConditions.h"

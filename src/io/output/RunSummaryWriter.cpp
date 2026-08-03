@@ -1,4 +1,4 @@
-#include "io/RunSummaryWriter.h"
+#include "io/output/RunSummaryWriter.h"
 #include "core/SimulationConfig.h"
 #include <fstream>
 #include <nlohmann/json.hpp>

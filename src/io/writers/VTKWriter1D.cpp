@@ -1,4 +1,4 @@
-#include "io/VTKWriter1D.h"
+#include "io/writers/VTKWriter1D.h"
 #include <fstream>
 #include <stdexcept>
 
@@ -9,6 +9,7 @@ void VTKWriter1D::write(const Field1D& field, const std::string& filename){
     }
 
     const size_t npts = field.size();
+    const std::size_t numVariables = field.numVariables();
 
     out << "# vtk DataFile Version 3.0\n";
     out << "1D CFD Solution.\n";
@@ -32,13 +33,18 @@ void VTKWriter1D::write(const Field1D& field, const std::string& filename){
 
     out << "\n\n";
     out << "POINT_DATA " << npts << "\n";
-    out << "SCALARS u float 1\n";
-    out << "LOOKUP_TABLE default\n";
+    /* Write one scalar field at a time */
+    for (std::size_t k = 0; k < numVariables; ++k){
+        out << "SCALARS U" << k << " float 1\n";
+        out << "LOOKUP_TABLE default\n";
 
-    for (size_t i = 0; i < npts; ++i){
-        out << field[i] << "\n";
-    }
-    
+        /* Write the value of the k-th conserved variable
+       at every grid point */
+       for (std::size_t i = 0; i < npts; ++i){
+            out << field[i][k] << "\n";    
+       }
+       out << "\n";
+    }       
 }
 
 std::string VTKWriter1D::extension() const {

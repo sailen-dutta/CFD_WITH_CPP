@@ -1,7 +1,7 @@
-#include "io/OutputWriterFactory.h"
-#include "io/CSVWriter.h"
-#include "io/VTKWriter1D.h"
-#include "io/TecplotWriter1D.h"
+#include "io/writers/OutputWriterFactory.h"
+#include "io/writers/CSVWriter.h"
+#include "io/writers/VTKWriter1D.h"
+#include "io/writers/TecplotWriter1D.h"
 
 #include <stdexcept>
 #include <memory>

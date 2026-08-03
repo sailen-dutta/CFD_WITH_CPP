@@ -1,13 +1,13 @@
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 #include "physics/initial_conditions/InitialConditions.h"
-#include "physics/ExactSolutions.h"
+#include "physics/exact_solutions/ExactSolutions.h"
 #include "analysis/ErrorAnalysis.h"
 #include "numerics/UpwindScheme.h"
 #include "numerics/FTCS.h"
 #include "numerics/LaxFriedrichsScheme.h"
 #include "numerics/LaxWendroffScheme.h"
-#include "io/CSVWriter.h"
+#include "io/writers/CSVWriter.h"
 
 #include <iostream>
 #include <memory>
@@ -30,8 +30,9 @@ int main(int argc, char* argv[]){
     /* Grid */
     Grid1D grid(0.0, 1.0, 101);
     
+    const std::size_t numVariables = 1;
 
-    Field1D u(grid);
+    Field1D u(grid,numVariables);
     u.fill(0.0);
 
     /* Initial Conditions */
@@ -114,13 +115,15 @@ int main(int argc, char* argv[]){
         }
     }
 
-    Field1D u_exact(grid);
+    Field1D u_exact(grid, numVariables);
     if (ic_name == "sine"){        
         ExactSolutions::sineWave(u_exact, c, t_final);        
     }
     else if (ic_name == "square") {        
         ExactSolutions::squarePulse(u_exact, c, t_final, 0.4, 0.6, 1.0);        
     }
+
+    writer.write(u_exact, "output/exact_solution_final.csv");
 
     double l2_error = ErrorAnalysis::computeL2Error(u, u_exact);
     double linf_error = ErrorAnalysis::computeLinfError(u, u_exact);   

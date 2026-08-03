@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Field1D.h"
-#include "io/OutputWriter.h"
+#include "io/writers/OutputWriter.h"
 #include <string>
 
 class CSVWriter : public OutputWriter{

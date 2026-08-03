@@ -5,5 +5,5 @@
 class RusanovFlux : public NumericalFlux {
     public:
         RusanovFlux() = default;
-        double compute(double uL, double uR, const HyperbolicEquation& equation) const override;   
+        Vector compute(const Vector& UL, const Vector& UR, const HyperbolicEquation& equation) const override;   
 };

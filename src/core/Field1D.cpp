@@ -19,6 +19,10 @@ Vector& Field1D::operator[](std::size_t i) {
 	return values_[i];
 }
 
+const Vector& Field1D::operator[](std::size_t i) const {
+	return values_[i];
+}
+
 Vector& Field1D::at(std::size_t i) {
 	return values_.at(i);
 }

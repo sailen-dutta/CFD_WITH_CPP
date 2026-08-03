@@ -13,8 +13,8 @@ class Vector{
         Vector(std::initializer_list<double> values);
 
         /* Capacity */
-        std::size_t size() const noexcept;
-        bool empty() const noexcept;
+        [[nodiscard]] std::size_t size() const noexcept;
+        [[nodiscard]] bool empty() const noexcept;
         void resize(std::size_t n);
 
         /* Element Access */
@@ -28,11 +28,11 @@ class Vector{
         void fill(double value);
 
         /* Arithmetic */
-        Vector operator+(const Vector& rhs) const;
-        Vector operator-(const Vector& rhs) const;
-        Vector operator-() const;
-        Vector operator*(double scalar) const;
-        Vector operator/(double scalar) const;
+        [[nodiscard]] Vector operator+(const Vector& rhs) const;
+        [[nodiscard]] Vector operator-(const Vector& rhs) const;
+        [[nodiscard]] Vector operator-() const;
+        [[nodiscard]] Vector operator*(double scalar) const;
+        [[nodiscard]] Vector operator/(double scalar) const;
         Vector& operator+=(const Vector& rhs);
         Vector& operator-=(const Vector& rhs);
         Vector& operator*=(double scalar);
@@ -41,10 +41,10 @@ class Vector{
         friend Vector operator*(double scalar, const Vector& vec);
 
         /* Numerical operations */
-        double dot(const Vector& rhs) const;
-        double sum() const;
-        double normL2() const;
-        double normInf() const;
+        [[nodiscard]] double dot(const Vector& rhs) const;
+        [[nodiscard]] double sum() const;
+        [[nodiscard]] double normL2() const;
+        [[nodiscard]] double normInf() const;
         double min() const;
         double max() const;
 
