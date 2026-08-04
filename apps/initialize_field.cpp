@@ -5,7 +5,7 @@
 
 int main(){
     Grid1D grid(0.0, 1.0, 101);
-    Field1D u(grid);
+    Field1D u(grid,1);
 
     u.fill(0.0);
 

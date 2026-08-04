@@ -8,8 +8,8 @@
 TEST(ErrorAnalysisTest, ZeroError){
     Grid1D grid(0.0,1.0,5);
     
-    Field1D numerical(grid);
-    Field1D exact(grid);
+    Field1D numerical(grid,1);
+    Field1D exact(grid,1);
 
     numerical.fill(1.0);
     exact.fill(1.0);
@@ -22,8 +22,8 @@ TEST(ErrorAnalysisTest, ZeroError){
 TEST(ErrorAnalysisTest, ConstantUnitError){
     Grid1D grid(0.0, 1.0, 5);
 
-    Field1D numerical(grid);
-    Field1D exact(grid);
+    Field1D numerical(grid,1);
+    Field1D exact(grid,1);
 
     numerical.fill(1.0);
     exact.fill(0.0);
@@ -37,21 +37,21 @@ TEST(ErrorAnalysisTest, L2LinfThrowsOnSizeMismatch){
     Grid1D grid1(0.0, 1.0, 5);
     Grid1D grid2(0.0, 1.0, 7);
 
-    Field1D u1(grid1);
-    Field1D u2(grid2);
+    Field1D u1(grid1,1);
+    Field1D u2(grid2,1);
 
     EXPECT_THROW(ErrorAnalysis::computeL2Error(u1,u2), std::runtime_error);
     EXPECT_THROW(ErrorAnalysis::computeLinfError(u1,u2), std::runtime_error);
 }
 
-TEST(ErrorAnalysis, KnownL2Value){
+TEST(ErrorAnalysisTest, KnownL2Value){
     Grid1D grid(0.0, 1.0, 3);
 
-    Field1D numerical(grid), exact(grid);
+    Field1D numerical(grid,1), exact(grid,1);
 
-    numerical[0] = 1.0;
-    numerical[1] = 2.0;
-    numerical[2] = 3.0;
+    numerical[0][0] = 1.0;
+    numerical[1][0] = 2.0;
+    numerical[2][0] = 3.0;
 
     exact.fill(0.0);
 
@@ -64,14 +64,14 @@ TEST(ErrorAnalysisTest, SymmetryProperty)
 {
     Grid1D grid(0.0, 1.0, 5);
 
-    Field1D u(grid);
-    Field1D v(grid);
+    Field1D u(grid,1);
+    Field1D v(grid,1);
 
-    u[0] = 1.0;
-    u[1] = 2.0;
-    u[2] = 3.0;
-    u[3] = 4.0;
-    u[4] = 5.0;
+    u[0][0] = 1.0;
+    u[1][0] = 2.0;
+    u[2][0] = 3.0;
+    u[3][0] = 4.0;
+    u[4][0] = 5.0;
 
     v.fill(0.0);
 
@@ -92,14 +92,14 @@ TEST(ErrorAnalysisTest, NormsAreNonNegative)
 {
     Grid1D grid(0.0, 1.0, 5);
 
-    Field1D u(grid);
-    Field1D v(grid);
+    Field1D u(grid,1);
+    Field1D v(grid,1);
 
-    u[0] = -1.0;
-    u[1] =  2.0;
-    u[2] = -3.0;
-    u[3] =  4.0;
-    u[4] = -5.0;
+    u[0][0] = -1.0;
+    u[1][0] =  2.0;
+    u[2][0] = -3.0;
+    u[3][0] =  4.0;
+    u[4][0] = -5.0;
 
     v.fill(0.0);
 
@@ -116,16 +116,16 @@ TEST(ErrorAnalysisTest, LinfReturnsMaximumError)
 {
     Grid1D grid(0.0, 1.0, 5);
 
-    Field1D numerical(grid);
-    Field1D exact(grid);
+    Field1D numerical(grid,1);
+    Field1D exact(grid,1);
 
     exact.fill(0.0);
 
-    numerical[0] = 0.1;
-    numerical[1] = 0.7;
-    numerical[2] = 0.3;
-    numerical[3] = 0.2;
-    numerical[4] = 0.5;
+    numerical[0][0] = 0.1;
+    numerical[1][0] = 0.7;
+    numerical[2][0] = 0.3;
+    numerical[3][0] = 0.2;
+    numerical[4][0] = 0.5;
 
     double linf = ErrorAnalysis::computeLinfError(numerical,exact);
 
