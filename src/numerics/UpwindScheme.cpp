@@ -2,10 +2,10 @@
 
 void UpwindScheme::step(Field1D& u, double c, double dt){
     Field1D u_new = u;
-    double dx = u.grid().dx();
-    double cfl = c * dt/dx;
+    const double dx = u.grid().dx();
+    const double cfl = c * dt/dx;
 
-    for (size_t i = 0; i < u.size(); i++){
+    for (std::size_t i = 0; i < u.size(); i++){
         /* Periodic Boundary Condition */
         std::size_t im1;
         if (i == 0) { 
