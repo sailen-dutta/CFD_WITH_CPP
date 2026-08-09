@@ -59,3 +59,14 @@ target_link_libraries(test_vector
 )
 
 gtest_discover_tests(test_vector)
+
+add_executable(test_burgers_equation
+    test_burgers_equation.cpp)
+
+target_link_libraries(test_burgers_equation
+    PRIVATE
+        equations
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_burgers_equation)
