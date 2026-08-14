@@ -70,3 +70,14 @@ target_link_libraries(test_burgers_equation
 )
 
 gtest_discover_tests(test_burgers_equation)
+
+add_executable(test_rusanov_flux
+    test_rusanov_flux.cpp)
+
+target_link_libraries(test_rusanov_flux
+    PRIVATE
+        flux
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_rusanov_flux)
