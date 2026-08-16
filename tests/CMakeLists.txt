@@ -81,3 +81,14 @@ target_link_libraries(test_rusanov_flux
 )
 
 gtest_discover_tests(test_rusanov_flux)
+
+add_executable(test_reconstruction
+    test_reconstruction.cpp)
+
+target_link_libraries(test_reconstruction
+    PRIVATE
+        reconstruction
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_reconstruction)
