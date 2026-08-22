@@ -92,3 +92,14 @@ target_link_libraries(test_reconstruction
 )
 
 gtest_discover_tests(test_reconstruction)
+
+add_executable(test_limiters
+    test_limiters.cpp)
+
+target_link_libraries(test_limiters
+    PRIVATE
+        limiter
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_limiters)
