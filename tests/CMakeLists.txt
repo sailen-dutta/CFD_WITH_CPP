@@ -91,6 +91,17 @@ target_link_libraries(test_reconstruction
         GTest::gtest_main
 )
 
+add_executable(test_flux_factory
+    test_flux_factory.cpp)
+
+target_link_libraries(test_flux_factory
+    PRIVATE
+        flux
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_flux_factory)
+
 gtest_discover_tests(test_reconstruction)
 
 add_executable(test_limiters
