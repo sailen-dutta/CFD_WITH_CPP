@@ -1,6 +1,7 @@
 #include "numerics/reconstruction/PiecewiseConstantReconstruction.h"
 #include "numerics/reconstruction/MUSCLReconstruction.h"
 #include "numerics/limiter/UnlimitedLimiter.h"
+#include "numerics/reconstruction/ReconstructionFactory.h"
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 
@@ -185,4 +186,30 @@ TEST(MUSCLReconstructionTest, PeriodicInterface){
         Therefore UR = 1 - 0.5(-1.5) = 1.75 */
     EXPECT_DOUBLE_EQ(UL[0], 4.25);
     EXPECT_DOUBLE_EQ(UR[0], 1.75);
+}
+
+/* Reconstruction Factory tests. ReconstructionFactory requires SlopeLimiter&. We will use Unlimited limiter to satisfy the dependecy */
+TEST(ReconstructionFactoryTest, CreatesPiecewiseConstant){
+    UnlimitedLimiter limiter;
+
+    /* Factory should create PiecewiseConstantReconstruction when given the string piecewise_constant */
+    auto reconstruction = ReconstructionFactory::create("piecewise_constant", limiter);
+
+    /* The factory returns a unique_ptr<Reconstruction>, so verify that an object was actually created */
+    ASSERT_NE(reconstruction, nullptr);
+
+    /* Check that the oject is specifically PiecewiseConstantReconstruction */
+    EXPECT_NE(dynamic_cast<PiecewiseConstantReconstruction*>(reconstruction.get()), nullptr);
+}
+
+TEST(ReconstructionFactoryTest, CreatesMUSCL){
+    UnlimitedLimiter limiter;
+    auto reconstruction = ReconstructionFactory::create("muscl", limiter);
+    ASSERT_NE(reconstruction, nullptr);
+    EXPECT_NE(dynamic_cast<MUSCLReconstruction*>(reconstruction.get()), nullptr);
+}
+
+TEST(ReconstructionFactoryTest, UnknownReconstructionThrows){
+    UnlimitedLimiter limiter;
+    EXPECT_THROW(ReconstructionFactory::create("unknown", limiter), std::runtime_error);
 }
