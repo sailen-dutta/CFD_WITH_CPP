@@ -114,3 +114,17 @@ target_link_libraries(test_limiters
 )
 
 gtest_discover_tests(test_limiters)
+
+add_executable(test_finitevolume_spatial_operator
+    test_finitevolume_spatial_operator.cpp)
+
+target_link_libraries(test_finitevolume_spatial_operator
+    PRIVATE
+        spatial
+        flux
+        reconstruction
+        limiter
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_finitevolume_spatial_operator)
