@@ -128,3 +128,15 @@ target_link_libraries(test_finitevolume_spatial_operator
 )
 
 gtest_discover_tests(test_finitevolume_spatial_operator)
+
+add_executable(test_forward_euler
+    test_forward_euler.cpp)
+
+target_link_libraries(test_forward_euler
+    PRIVATE
+        spatial
+        time
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_forward_euler)
