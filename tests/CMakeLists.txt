@@ -140,3 +140,15 @@ target_link_libraries(test_forward_euler
 )
 
 gtest_discover_tests(test_forward_euler)
+
+add_executable(test_rk2
+    test_rk2.cpp)
+
+target_link_libraries(test_rk2
+    PRIVATE
+        spatial
+        time
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_rk2)
