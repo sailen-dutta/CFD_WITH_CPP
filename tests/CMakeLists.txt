@@ -152,3 +152,15 @@ target_link_libraries(test_rk2
 )
 
 gtest_discover_tests(test_rk2)
+
+add_executable(test_ssprk3
+    test_ssprk3.cpp)
+
+target_link_libraries(test_ssprk3
+    PRIVATE
+        spatial
+        time
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_ssprk3)
