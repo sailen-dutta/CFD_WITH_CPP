@@ -164,3 +164,15 @@ target_link_libraries(test_ssprk3
 )
 
 gtest_discover_tests(test_ssprk3)
+
+add_executable(test_time_integrator_factory
+    test_time_integrator_factory.cpp)
+
+target_link_libraries(test_time_integrator_factory
+    PRIVATE
+        spatial
+        time
+        GTest::gtest_main
+)
+
+gtest_discover_tests(test_time_integrator_factory)
