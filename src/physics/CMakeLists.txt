@@ -1,5 +1,6 @@
 add_library(equations STATIC
 	equations/BurgersEquation.cpp
+	equations/EulerEquation.cpp
 )
 
 add_library(exact_solutions STATIC

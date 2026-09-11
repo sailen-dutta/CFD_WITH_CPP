@@ -176,3 +176,17 @@ target_link_libraries(test_time_integrator_factory
 )
 
 gtest_discover_tests(test_time_integrator_factory)
+
+
+add_executable(test_euler
+    test_euler.cpp)
+
+target_link_libraries(test_euler
+	PRIVATE
+		spatial
+		time
+		equations
+		GTest::gtest_main
+)
+
+gtest_discover_tests(test_euler)
