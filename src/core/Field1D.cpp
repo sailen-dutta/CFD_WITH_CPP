@@ -1,11 +1,19 @@
 #include "core/Field1D.h"
 
 /* Constructor */
-Field1D::Field1D(const Grid1D& grid, std::size_t num_variables) : grid_(grid), values_(grid.size(), Vector(num_variables)){}
+Field1D::Field1D(const Grid1D& grid, std::size_t num_variables, std::size_t numGhostCells) : grid_(grid), values_(grid.size() + 2*numGhostCells, Vector(num_variables)), numGhostCells_(numGhostCells){}
 
 /* Capacity */
 std::size_t Field1D::size() const noexcept {
 	return values_.size();
+}
+
+std::size_t Field1D::numPhysicalCells() const noexcept {
+	return grid_.size();
+}
+
+std::size_t Field1D::numGhostCells() const noexcept {
+	return numGhostCells_;
 }
 
 std::size_t Field1D::numVariables() const noexcept {
@@ -13,6 +21,11 @@ std::size_t Field1D::numVariables() const noexcept {
 
 	return values_.front().size();
 }
+
+std::size_t Field1D::physicalIndex(std::size_t i) const noexcept {
+	return i + numGhostCells_;
+}
+
 
 /* Element access */
 Vector& Field1D::operator[](std::size_t i) {
