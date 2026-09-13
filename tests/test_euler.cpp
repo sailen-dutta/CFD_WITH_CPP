@@ -1,4 +1,7 @@
 #include "physics/equations/EulerEquation.h"
+#include "physics/initial_conditions/InitialConditions.h"
+#include "core/Grid1D.h"
+#include "core/Field1D.h"
 #include "core/Vector.h"
 #include <cmath>
 #include <gtest/gtest.h>
@@ -68,4 +71,21 @@ TEST(EulerEquationTest, RightSodStateWaveSpeed) {
 	const double a = std::sqrt(equation.gamma() * 0.1 / 0.125);
 
 	EXPECT_DOUBLE_EQ(equation.maxWaveSpeed(U), a);
+}
+
+TEST(EulerEquationTest, InitialConditionSodShockTube) {
+	Grid1D grid(0.0, 1.0, 11);
+	Field1D field(grid, 3);
+
+	InitialConditions::sodShockTube(field);
+
+	// Left State
+	EXPECT_DOUBLE_EQ(field[2][0], 1.0);
+	EXPECT_DOUBLE_EQ(field[2][1], 0.0);
+	EXPECT_DOUBLE_EQ(field[2][2], 2.5);
+
+	// Right State
+	EXPECT_DOUBLE_EQ(field[8][0], 0.125);
+	EXPECT_DOUBLE_EQ(field[8][1], 0.0);
+	EXPECT_DOUBLE_EQ(field[8][2], 0.25);
 }
