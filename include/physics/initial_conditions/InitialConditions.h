@@ -10,4 +10,6 @@ namespace InitialConditions{
     void gaussian(Field1D& field, double center, double sigma);
 
     void sinewave(Field1D& field);
+
+    void sodShockTube(Field1D& field, double x_discontinuity = 0.5, double gamma = 1.4);
 }
