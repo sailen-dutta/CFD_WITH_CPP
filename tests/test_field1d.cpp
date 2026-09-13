@@ -42,3 +42,38 @@ TEST(Field1DTest, AtThrowsOutOfRange){
     Field1D u(grid,1);
     EXPECT_THROW(u.at(11), std::out_of_range);
 }
+
+TEST(Field1DTest, NoGhostCells) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D field(grid, 3);
+
+	EXPECT_EQ(field.numPhysicalCells(), 5);
+	EXPECT_EQ(field.numGhostCells(), 0);
+	EXPECT_EQ(field.size(), 5);
+	EXPECT_EQ(field.numVariables(), 3);
+}
+
+TEST(Field1DTest, HasOneGhostCell) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D field(grid, 3, 1);
+
+	EXPECT_EQ(field.numPhysicalCells(), 5);
+	EXPECT_EQ(field.numGhostCells(), 1);
+	EXPECT_EQ(field.size(), 7);
+}
+
+TEST(Field1DTesst, PhysicalIndex) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D field(grid, 3, 1);
+
+	EXPECT_EQ(field.physicalIndex(0), 1);
+	EXPECT_EQ(field.physicalIndex(1), 2);
+	EXPECT_EQ(field.physicalIndex(4), 5);
+
+	Field1D u(grid, 3, 2);
+	EXPECT_EQ(u.physicalIndex(0), 2);
+	EXPECT_EQ(u.physicalIndex(1), 3);
+	EXPECT_EQ(u.physicalIndex(4), 6);
+}
+
+

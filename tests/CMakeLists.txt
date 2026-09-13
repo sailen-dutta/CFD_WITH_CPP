@@ -186,6 +186,7 @@ target_link_libraries(test_euler
 		spatial
 		time
 		equations
+		initial_conditions
 		GTest::gtest_main
 )
 
