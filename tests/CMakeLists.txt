@@ -191,3 +191,15 @@ target_link_libraries(test_euler
 )
 
 gtest_discover_tests(test_euler)
+
+
+add_executable(test_periodic_bc
+    test_periodic_bc.cpp)
+
+target_link_libraries(test_periodic_bc
+	PRIVATE
+		boundaryconditions
+		GTest::gtest_main
+)
+
+gtest_discover_tests(test_periodic_bc)

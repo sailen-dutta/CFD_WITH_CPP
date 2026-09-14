@@ -93,3 +93,16 @@ target_link_libraries(time
 		core
 )
 
+add_library(boundaryconditions STATIC
+	boundary/PeriodicBC.cpp
+)
+
+target_include_directories(boundaryconditions
+	PUBLIC
+		${PROJECT_SOURCE_DIR}/include
+)
+
+target_link_libraries(boundaryconditions
+	PUBLIC
+		core
+)
