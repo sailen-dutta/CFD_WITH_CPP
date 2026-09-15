@@ -46,27 +46,44 @@ TEST(PiecwiseReconstructionTest, UsesAdjacentCellValues){
     EXPECT_DOUBLE_EQ(UR[0], 8.0);
 }
 
-TEST(PiecewiseReconstructionTest, PeriodicBC){
-    Grid1D grid(0.0, 1.0, 5);
-    Field1D U(grid, 1);
+TEST(PiecewiseConstantReconstructionTest, ReconstructionAtLeftBoundary) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D U(grid, 1, 1);
 
-    U[0][0] = 1.0;
-    U[1][0] = 2.0;
-    U[2][0] = 3.0;
-    U[3][0] = 4.0;
-    U[4][0] = 5.0;
+	/* G | C0 | C1 | C2 | C3 | C4 | G */
+	U[0][0] = 50.0;	/* Left ghost */
+	U[1][0] = 10.0;
 
-    Vector UL(1);
-    Vector UR(1);
+	Vector UL(1), UR(1);
 
-    PiecewiseConstantReconstruction reconstruction;
+	PiecewiseConstantReconstruction reconstruction;
 
-    /* Interface 4 is between cell 4 and cell 0 */
-    reconstruction.reconstruct(U, 4, UL, UR);
+	/* Interface 0 is between left ghost and C0 */
+	reconstruction.reconstruct(U, 0, UL, UR);
 
-    EXPECT_DOUBLE_EQ(UL[0], 5.0);
-    EXPECT_DOUBLE_EQ(UR[0], 1.0);
+	EXPECT_DOUBLE_EQ(UL[0], 50.0);
+	EXPECT_DOUBLE_EQ(UR[0], 10.0);
 }
+
+TEST(PiecewiseConstantReconstructionTest, ReconstructionAtRighttBoundary) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D U(grid, 1, 1);
+
+	/* G | C0 | C1 | C2 | C3 | C4 | G */
+	U[6][0] = 50.0;	/* right ghost */
+	U[5][0] = 10.0;
+
+	Vector UL(1), UR(1);
+
+	PiecewiseConstantReconstruction reconstruction;
+
+	/* Interface 5 is between right ghost and C4 */
+	reconstruction.reconstruct(U, 5, UL, UR);
+
+	EXPECT_DOUBLE_EQ(UL[0], 10.0);
+	EXPECT_DOUBLE_EQ(UR[0], 50.0);
+}
+
 
 TEST(MUSCLReconstructionTest, ConstantField){
     Grid1D grid(0.0, 1.0, 5);

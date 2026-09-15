@@ -4,5 +4,5 @@
 /* First order reconstruction: Assumes the solution is constant inside each cell */
 class PiecewiseConstantReconstruction : public Reconstruction {
     public:
-        void reconstruct(const Field1D& U, size_t interface, Vector& UL, Vector& UR) const override;
+        void reconstruct(const Field1D& U, size_t interface, Vector& UL, Vector& UR) const override;	/* interface = storage index of the cell immediately to the left of interface */
 };
