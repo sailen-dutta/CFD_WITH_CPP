@@ -124,6 +124,7 @@ target_link_libraries(test_finitevolume_spatial_operator
         flux
         reconstruction
         limiter
+	boundaryconditions
         GTest::gtest_main
 )
 

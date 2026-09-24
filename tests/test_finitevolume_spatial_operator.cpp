@@ -2,6 +2,7 @@
 #include "numerics/flux/RusanovFlux.h"
 #include "numerics/reconstruction/PiecewiseConstantReconstruction.h"
 #include "physics/equations/BurgersEquation.h"
+#include "numerics/boundary/PeriodicBC.h"
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 #include <gtest/gtest.h>
@@ -11,15 +12,15 @@ TEST(FiniteVolumeSpatialOperatorTest, ConstantFieldHasZeroRHS){
        Since every cell contains the same value, flux entering a cell = flux leaving it
        Hence, RHS = -(F_right - F_left)/dx = 0 */
     Grid1D grid(0.0, 1.0, 11);
-    Field1D U(grid, 1);
-    Field1D rhs(grid, 1);
+    BurgersEquation equation;
+    RusanovFlux flux;
+    PiecewiseConstantReconstruction reconstruction;
+    Field1D U(grid, equation.numVariables(), 1);
+    Field1D rhs(grid, equation.numVariables(), 1);
 
     U.fill(2.0);
     rhs.fill(0.0);
 
-    BurgersEquation equation;
-    RusanovFlux flux;
-    PiecewiseConstantReconstruction reconstruction;
 
     FiniteVolumeSpatialOperator spatialOperator(equation, flux, reconstruction);
 
@@ -53,21 +54,26 @@ TEST(FiniteVolumeSpatialOperator, NonConstantBurgersField){
             - periodic boundaries
     */
    Grid1D grid(0.0, 1.0, 5);
-   Field1D u(grid, 1);
-   Field1D rhs(grid, 1);
-
-   /* Non-constant periodic field: U = [1, 2, 3, 4, 5] */
-   u[0][0] = 1.0;
-   u[1][0] = 2.0;
-   u[2][0] = 3.0;
-   u[3][0] = 4.0;
-   u[4][0] = 5.0;
-
-   rhs.fill(0.0);
 
    BurgersEquation equation;
    RusanovFlux flux;
    PiecewiseConstantReconstruction reconstruction;
+
+   Field1D u(grid, equation.numVariables(), 1);
+   Field1D rhs(grid, equation.numVariables(), 1);
+
+   /* Non-constant periodic field: U = [1, 2, 3, 4, 5] */
+   u[1][0] = 1.0;
+   u[2][0] = 2.0;
+   u[3][0] = 3.0;
+   u[4][0] = 4.0;
+   u[5][0] = 5.0;
+
+   PeriodicBC boundary;
+   boundary.apply(u);
+
+   rhs.fill(0.0);
+
 
    FiniteVolumeSpatialOperator spatial_operator(equation, flux, reconstruction);
 
@@ -78,7 +84,79 @@ TEST(FiniteVolumeSpatialOperator, NonConstantBurgersField){
     The first cell includes the periodic interface between U[4] = 5 and U[0] = 1. */
     const double expected[] = {65.0, -6.0, -10.0, -14.0, -35.0};
 
-    for (std::size_t i = 0; i < u.size(); ++i){
-        EXPECT_NEAR(rhs[i][0], expected[i], 1e-12);
+    for (std::size_t i = 0; i < u.numPhysicalCells(); ++i){
+	const std::size_t si = u.physicalIndex(i);
+        EXPECT_NEAR(rhs[si][0], expected[i], 1e-12);
     }
 }
+
+TEST(FiniteVolumeSpatialOperator, ConstantFieldWithPeriodicBCProducesZeroRHS) {
+	Grid1D grid(0.0, 1.0, 5);
+
+	BurgersEquation equation;
+	RusanovFlux flux;
+	PiecewiseConstantReconstruction reconstruction;
+
+	FiniteVolumeSpatialOperator op(equation, flux, reconstruction);
+
+	Field1D U(grid, equation.numVariables(), 1);
+	Field1D rhs(grid, equation.numVariables(), 1);
+
+	/* G | C0 | C1 | C2 | C3 | C4 | G */
+	U[1][0] = 3.0;
+	U[2][0] = 3.0;
+	U[3][0] = 3.0;
+	U[4][0] = 3.0;
+	U[5][0] = 3.0;
+
+	PeriodicBC boundary;
+	boundary.apply(U);
+
+	rhs.fill(123.0);
+
+	op.computeRHS(U, rhs);
+
+	/* All physical cells RHS values should be zero */
+	for (std::size_t i = 0; i < U.numPhysicalCells(); ++i) {
+		const std::size_t si = U.physicalIndex(i);
+
+		EXPECT_DOUBLE_EQ(rhs[si][0], 0.0);
+	}
+
+	/* Ghost cell values should not be modified */
+	EXPECT_DOUBLE_EQ(rhs[0][0], 123.0);
+	EXPECT_DOUBLE_EQ(rhs[6][0], 123.0);
+}
+
+TEST(FiniteVolumeSpatialOperator, SingleNonZeroValueProducesExpectedRHS) {
+	Grid1D grid(0.0, 1.0, 5);
+
+	BurgersEquation equation;
+	RusanovFlux flux;
+	PiecewiseConstantReconstruction reconstruction;
+
+	FiniteVolumeSpatialOperator op(equation, flux, reconstruction);
+
+	Field1D U(grid, equation.numVariables(), 1);
+	Field1D rhs(grid, equation.numVariables(), 1);
+
+	/* G | C0 | C1 | C2 | C3 | C4 | G */
+	/* U in C1 = 1, rest all are zero */
+	U[1][0] = U[3][0] = U[4][0] = U[5][0] = 0.0;
+	U[2][0] = 1.0;
+
+	PeriodicBC boundary;
+	boundary.apply(U);
+
+	rhs.fill(0.0);
+
+	op.computeRHS(U, rhs);
+
+	std::vector<double> expectedRHS = {1, -4, 3, 0, 0};
+
+	for (std::size_t i = 0; i < U.numPhysicalCells(); ++i){
+		const std::size_t si = U.physicalIndex(i);
+		EXPECT_DOUBLE_EQ(rhs[si][0], expectedRHS[i]);
+	}
+}
+
