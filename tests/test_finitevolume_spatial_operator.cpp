@@ -6,6 +6,7 @@
 #include "core/Field1D.h"
 #include "core/Grid1D.h"
 #include <gtest/gtest.h>
+#include <random>
 
 TEST(FiniteVolumeSpatialOperatorTest, ConstantFieldHasZeroRHS){
     /* A constant solution should remain constant 
@@ -159,4 +160,46 @@ TEST(FiniteVolumeSpatialOperator, SingleNonZeroValueProducesExpectedRHS) {
 		EXPECT_DOUBLE_EQ(rhs[si][0], expectedRHS[i]);
 	}
 }
+
+TEST(FiniteVolumeSpatialOperator, ConservativePropertyWithRandomFieldValues) {
+	/* For a conservative FV operator with periodic boundaries, the interface fluxes cancel when summed over all physical cells */
+	Grid1D grid(0.0, 1.0, 5);
+
+	BurgersEquation equation;
+	RusanovFlux flux;
+	PiecewiseConstantReconstruction reconstruction;
+
+	FiniteVolumeSpatialOperator op(equation, flux, reconstruction);
+
+	Field1D U(grid, equation.numVariables(), 1);
+	Field1D rhs(grid, equation.numVariables(), 1);
+	
+	unsigned int seed = 56;
+	std::mt19937 gen(seed);
+
+	std::uniform_real_distribution<double> distrib(1.0, 5.0);
+
+	for (std::size_t i = 0; i < U.numPhysicalCells(); ++i) {
+		const std::size_t si = U.physicalIndex(i);
+		U[si][0] = distrib(gen);
+	}
+
+	PeriodicBC boundary;
+	boundary.apply(U);
+
+	rhs.fill(0.0);
+
+	op.computeRHS(U, rhs);
+
+	double totalRHS = 0.0;
+
+	for (std::size_t i = 0; i < U.numPhysicalCells(); ++i) {
+		const std::size_t si = U.physicalIndex(i);
+		totalRHS += rhs[si][0];
+	}
+
+	EXPECT_NEAR(totalRHS, 0.0, 1e-12);
+}
+
+
 
