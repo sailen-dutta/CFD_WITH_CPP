@@ -76,4 +76,14 @@ TEST(Field1DTesst, PhysicalIndex) {
 	EXPECT_EQ(u.physicalIndex(4), 6);
 }
 
+TEST(Field1DTest, HasTwoGhostCells) {
+	Grid1D grid(0.0, 1.0, 5);
+	Field1D field(grid, 3, 2);
+
+	EXPECT_EQ(field.size(), 9);
+	EXPECT_EQ(field.numPhysicalCells(), 5);
+	EXPECT_EQ(field.numGhostCells(), 2);
+	EXPECT_EQ(field.physicalIndex(0), 2);
+	EXPECT_EQ(field.physicalIndex(4), 6);
+}
 
